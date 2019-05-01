@@ -1,38 +1,38 @@
-WIP: this project is a Work-In-Progress, we're experimenting with the idea and its utility.
-It is not released, nor stable, nor reliable; there are no functional tests yet.
+# WIP (work in progress) 
+> Experimenting with the idea and its utility at this stage. 
 
-ncrypt is for your data, what a vault is for your bank. Valuables should be protected.
+🧬 Ncrypt is for your data, what a vault is for your bank. Valuables should be protected.
 
 ## Easy to use
 
 ```bash
 $ ncrypt genesis.doc
-[+] Encrypted genesis.doc
+🔒 Encrypted genesis.doc
 
 $ ncrypt genesis.doc
-[+] Decrypted genesis.doc
+🔓 Decrypted genesis.doc
 
 $ ncrypt upload genesis.doc
-[+] Uploaded genesis.doc
-[#] Download reference: 2E3fde2a-genesis.doc
-[#] Expires: 24 hours
+⬆️ Uploaded genesis.doc
+ℹ️ Download reference: 2E3fde2a-genesis.doc
+ℹ️ Expires: 24 hours
 
 $ ncrypt download 2E3fde2a-genesis.doc
-[+] Downloaded genesis.doc
+⬇️ Downloaded genesis.doc
 
 $ ncrypt -key genesis.doc
-[+] Password: *******
-[+] Encrypted genesis.doc
+🔑 Encryption-key: *******
+🔒 Encrypted genesis.doc
 
 $ ncrypt genesis.doc
-[+] Password: ******
-[+] Decrypted genesis.doc
+🔑 Decryption-key: *******
+🔓 Decrypted genesis.doc
 ```
 
 ## Super secure
 
-Authenticated Encryption with Additional Authenticated Data (AEAD) couples confidentiality
-and integrity. Using the most popular AEAD today, AES-GCM.
+Authenticated Encryption with Additional Authenticated Data (AEAD) couples confidentiality and integrity. Using the 
+most popular AEAD today, AES-GCM.
 
 ref paper: https://eprint.iacr.org/2017/168.pdf
 
@@ -50,13 +50,13 @@ Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref:
 ## Quick start
 
 ```bash
-## developers
+# developers
 go get -u github.com/lfaoro/ncrypt
 
-## macOS
+# macOS
 brew install ncrypt
 
-## linux
+# linux
 curl ncryp.to/i | sh
 ```
 
