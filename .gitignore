@@ -2,3 +2,7 @@
 .vscode
 ncrypt
 secret.json
+todo.md
+*.ncrypt
+testFile
+testFile.bck
