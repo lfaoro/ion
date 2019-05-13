@@ -1,7 +1,9 @@
 # WIP (work in progress) 
 > Experimenting with the idea and its utility at this stage. 
 
-🧬 Helix2 - a geeky way to simply encrypt & share.
+🧬 Helix2 - a geeky & friendly way to simply encrypt & share.
+
+Consumer grade CLI-app, designed for every-user with love for power-users.
 
 ## Easy to use
 
@@ -29,7 +31,7 @@ $ ncrypt -key "xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn" genesis.doc
 🔓 Decrypted genesis.doc
 ```
 
-## Super secure
+## Leading encryption standard
 
 Authenticated Encryption with Additional Authenticated Data (AEAD) couples confidentiality and integrity. Using the 
 most popular AEAD today, AES-GCM.
@@ -74,3 +76,5 @@ I believe the only way to be sure about your data not being leaked in clear & mi
 exactly the steps that lead to its encryption.
 
 ncrypt is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
+
+Designed with user-friendliness in mind, aspiring to be used also by non-dev users.
