@@ -35,7 +35,7 @@ func getSignedURL(fileName, fileMD5 string) (string, error) {
 		return "", err
 	}
 	req.Header.Add("x-ncrypt-filename", fileName)
-	//req.Header.Add("x-ncrypt-md5", fileMD5)
+	// req.Header.Add("x-ncrypt-md5", fileMD5)
 
 	res, err := c.Do(req)
 	if err != nil {

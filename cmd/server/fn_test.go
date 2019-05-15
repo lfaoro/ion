@@ -6,17 +6,18 @@ package server
 import (
 	"bytes"
 	"encoding/gob"
-	"github.com/gorilla/mux"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/gorilla/mux"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStream(t *testing.T) {
-	var fileName = "testfile.txt"
-	var fileMD5 = "1e50210a0202497fb79bc38b6ade6c34"
+	fileName := "testfile.txt"
+	fileMD5 := "1e50210a0202497fb79bc38b6ade6c34"
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", Stream)

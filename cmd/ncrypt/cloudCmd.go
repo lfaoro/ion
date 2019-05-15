@@ -6,15 +6,17 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/lfaoro/pkg/encrypto"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
+	"strings"
+
+	"github.com/lfaoro/pkg/encrypto"
 )
 
 func uploadFile(fileName string, data []byte) (string, error) {
-
 	// bail if file is not encrypted
 	if !isEncrypted(data) {
 		// generate encryption key
@@ -54,11 +56,21 @@ func downloadCmd(fileName string) error {
 	}
 
 	uri.Path = path.Join(fileName)
-	//fmt.Println("ℹ️ Reference URL ", uri.String())
+	// fmt.Println("ℹ️ Reference URL ", uri.String())
 
 	res, err := http.Get(uri.String())
 	if err != nil {
 		return err
+	}
+
+	// avoid writing the file during unit tests.
+	if strings.HasSuffix(fileName, ".encrypted") {
+		tmpPath := path.Join(os.TempDir(), "ncrypt", fileName)
+		err = os.MkdirAll(tmpPath, 0700)
+		if err != nil {
+			return err
+		}
+		fileName = path.Join(tmpPath, fileName)
 	}
 
 	b, err := ioutil.ReadAll(res.Body)

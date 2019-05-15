@@ -9,9 +9,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/lfaoro/pkg/encrypto"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
+
+	"github.com/lfaoro/pkg/encrypto"
 )
 
 var (
@@ -28,7 +29,6 @@ func getHeader() []byte {
 }
 
 func main() {
-
 	app := cli.NewApp()
 	app.Name = "ncrypt"
 	app.Usage = "a geeky & friendly way to simply encrypt locally & share"
@@ -110,7 +110,7 @@ func main() {
 
 	app.Action = func(c *cli.Context) error {
 		// key flag
-		var keyFlag = c.Bool("key")
+		keyFlag := c.Bool("key")
 
 		var key string
 		if keyFlag {
@@ -146,7 +146,6 @@ func main() {
 	if err != nil {
 		check(err)
 	}
-
 }
 
 // TODO: refactor
@@ -197,7 +196,7 @@ func configKey() (string, error) {
 }
 
 func filePath(fileName string) string {
-	//TODO: if path contains more than 1 '/' return
+	// TODO: if path contains more than 1 '/' return
 	wd, err := os.Getwd()
 	check(err)
 	return filepath.Join(wd, fileName)

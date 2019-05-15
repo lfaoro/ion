@@ -4,10 +4,11 @@
 package main
 
 import (
-	"github.com/lfaoro/pkg/encrypto"
 	"io/ioutil"
 	"path/filepath"
 	"testing"
+
+	"github.com/lfaoro/pkg/encrypto"
 
 	"github.com/stretchr/testify/assert"
 )

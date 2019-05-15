@@ -8,13 +8,15 @@ package server
 //generate gcloud functions delete Stream
 
 import (
-	"cloud.google.com/go/storage"
 	"encoding/gob"
-	"go.opencensus.io/plugin/ochttp"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
+
+	"cloud.google.com/go/storage"
+
+	"go.opencensus.io/plugin/ochttp"
 )
 
 var (
@@ -58,22 +60,22 @@ func Stream(w http.ResponseWriter, r *http.Request) {
 			hError(w, errHeaderFilename, http.StatusBadRequest)
 			return
 		}
-		//md5Hash := r.Header.Get("x-ncrypt-md5")
-		//if md5Hash == "" || len(md5Hash) != 32{
+		// md5Hash := r.Header.Get("x-ncrypt-md5")
+		// if md5Hash == "" || len(md5Hash) != 32{
 		//	hError(w, errHeaderMD5, http.StatusBadRequest)
 		//	return
 		//}
 
-		//m := base64.StdEncoding.EncodeToString([]byte(md5Hash))
-		//s, _ := base64.StdEncoding.DecodeString(m)
-		//log.Println(md5Hash, len(md5Hash), m, len(s))
+		// m := base64.StdEncoding.EncodeToString([]byte(md5Hash))
+		// s, _ := base64.StdEncoding.DecodeString(m)
+		// log.Println(md5Hash, len(md5Hash), m, len(s))
 
 		url, err := storage.SignedURL(BucketName, fileName, &storage.SignedURLOptions{
 			GoogleAccessID: "cloudfunction@ncrypt.iam.gserviceaccount.com",
 			PrivateKey:     privateKey,
 			Method:         "PUT",
 			Expires:        time.Now().Add(time.Minute * 10),
-			//MD5:            base64.StdEncoding.EncodeToString([]byte(md5Hash)),
+			// MD5:            base64.StdEncoding.EncodeToString([]byte(md5Hash)),
 		})
 		if err != nil {
 			hError(w, err.Error(), http.StatusBadRequest)

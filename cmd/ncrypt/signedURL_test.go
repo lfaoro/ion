@@ -11,15 +11,15 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/lfaoro/pkg/encrypto"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/lfaoro/pkg/encrypto"
 )
 
 var testFile = "testfile.txt"
 var fileMD5 = "1e50210a0202497fb79bc38b6ade6c34"
 
 func Test_getSignedURL(t *testing.T) {
-
 	u, err := getSignedURL(testFile, fileMD5)
 	assert.Nil(t, err)
 	assert.NotNil(t, u)

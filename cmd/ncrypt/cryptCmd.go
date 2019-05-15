@@ -6,12 +6,14 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/lfaoro/pkg/encrypto/aesgcm"
-	"github.com/pkg/errors"
-	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/pkg/errors"
+	"github.com/urfave/cli"
+
+	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
 
 func cryptCmd(c *cli.Context) error {
@@ -24,7 +26,6 @@ func crypt(c *cli.Context, ce *aesgcm.AESGCM, fileName, filePath string, data []
 	}
 	var backupFlag bool
 	if c != nil {
-
 		backupFlag = c.Bool("backup")
 	}
 
