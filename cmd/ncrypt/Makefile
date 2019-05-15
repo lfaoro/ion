@@ -5,7 +5,7 @@ MAINTAINER ?= "Community"
 
 
 install:
-	@go install ./cmd/ncrypt/
+	@go install -mod vendor .
 
 build:
-	@go build ./cmd/ncrypt/
+	@go build -mod vendor .
