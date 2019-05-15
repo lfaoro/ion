@@ -42,7 +42,9 @@ ref paper: https://eprint.iacr.org/2017/168.pdf
 
 ## Compliance (WIP)
 
-ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission.
+Right now ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission
+. Ideally we'll have the keys stored in macOS keychain -- although I don't know if there's something comparable for 
+Linux and Windows.
 
 To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
 
