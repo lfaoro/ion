@@ -18,6 +18,8 @@ func Test_uploadFile(t *testing.T) {
 	data, err := ioutil.ReadFile(filePath)
 	assert.Nil(t, err)
 
+	// TODO(leo): add corrupted data test case.
+
 	name, err = uploadFile(fileName, data)
 	assert.Nil(t, err)
 }

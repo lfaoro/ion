@@ -14,12 +14,10 @@ import (
 	"testing"
 )
 
-const streamURL = "https://us-central1-ncrypt.cloudfunctions.net/Stream"
-
-var fileName = "testfile.txt"
-var fileMD5 = "1e50210a0202497fb79bc38b6ade6c34"
-
 func TestStream(t *testing.T) {
+	var fileName = "testfile.txt"
+	var fileMD5 = "1e50210a0202497fb79bc38b6ade6c34"
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", Stream)
 

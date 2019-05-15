@@ -63,8 +63,8 @@ func getSignedURL(fileName, fileMD5 string) (string, error) {
 	}
 
 	u, err := url.Parse(sURL)
-	if u == nil {
-		return "", errors.New("unable to get signed URL")
+	if err != nil {
+		return "", errors.New("unable to parse signed URL")
 	}
 	return u.String(), nil
 }

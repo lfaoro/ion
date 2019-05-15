@@ -54,7 +54,7 @@ func main() {
 		{
 			Name:      "upload",
 			ShortName: "u",
-			Aliases:   []string{"u,up"},
+			Aliases:   []string{"up, upl"},
 			Usage:     "uploads the encrypted file to cloud storage.",
 			Action: func(c *cli.Context) error {
 				fileName := c.Args().Get(0)
@@ -74,7 +74,7 @@ func main() {
 		{
 			Name:      "download",
 			ShortName: "d",
-			Aliases:   []string{"d, do, down"},
+			Aliases:   []string{"do, down"},
 			Usage:     "downloads the encrypted file using the reference-code.",
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -86,6 +86,24 @@ func main() {
 				fileName := c.Args().Get(0)
 				err := downloadCmd(fileName)
 				return err
+			},
+		},
+		{
+			Name:      "lock",
+			ShortName: "lo",
+			Aliases:   []string{"loc"},
+			Usage:     "locks the encryption key with a user provided password.",
+			Action: func(c *cli.Context) error {
+				return nil
+			},
+		},
+		{
+			Name:      "unlock",
+			ShortName: "un",
+			Aliases:   []string{"unl, unlo"},
+			Usage:     "unlocks the encryption key.",
+			Action: func(c *cli.Context) error {
+				return nil
 			},
 		},
 	}
