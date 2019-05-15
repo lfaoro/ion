@@ -1,9 +1,11 @@
 # WIP (work in progress) 
 > Experimenting with the idea and its utility at this stage. 
 
-🧬 Helix2 - a geeky & friendly way to simply encrypt & share.
+🧬 ncrypt - a geeky & friendly way to simply encrypt locally & share.
 
-Consumer grade CLI-app, designed for every-user with love for power-users.
+Consumer grade CLI-app, designed for every-user with love for the power-users.
+
+Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
 ## Easy to use
 
@@ -38,9 +40,9 @@ most popular AEAD today, AES-GCM.
 
 ref paper: https://eprint.iacr.org/2017/168.pdf
 
-## Compliance (in-progress)
+## Compliance (WIP)
 
-helix2 stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission.
+ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission.
 
 To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
 
@@ -69,6 +71,7 @@ curl ncryp.to/i | sh
 > Start by opening an [issue](https://github.com/lfaoro/pkg/issues/new).
 
 ## Motivation
+
 It's hard to find a service one can completely trust -- everybody claims they're encrypting your data, although how 
 can you be sure? 
 

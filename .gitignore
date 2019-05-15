@@ -1,8 +1,4 @@
 .idea
 .vscode
-secret.json
-todo.md
-*.ncrypt
-testFile
-testFile.bck
-ncrypt/
+TODO.md
+**/secret/*
