@@ -59,7 +59,7 @@ Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref:
 ```bash
 # developers
 go get -u github.com/lfaoro/ncrypt/...
-cd $GOPATH/src/github.com/lfaoro/ncrypt
+cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
 make install
 ncrypt -h
 
