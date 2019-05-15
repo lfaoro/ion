@@ -62,6 +62,7 @@ go get -u github.com/lfaoro/ncrypt/...
 cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
 make install
 ncrypt -h
+make test
 
 # macOS (WIP)
 brew install ncrypt
