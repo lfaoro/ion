@@ -71,7 +71,7 @@ func main() {
 		{
 			Name:      "download",
 			ShortName: "d",
-			Aliases:   []string{"d,do,down"},
+			Aliases:   []string{"d, do, down"},
 			Usage:     "downloads the encrypted file using the reference-code.",
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -139,6 +139,10 @@ func checkConfig() error {
 		_, err := os.Create(keyFile)
 		if err != nil {
 			return errors.Wrap(err, "config")
+		}
+		err = os.Chmod(keyFile, 0600)
+		if err != nil {
+			return errors.Wrap(err, "chmod")
 		}
 	}
 	f, err := os.OpenFile(keyFile, os.O_RDWR, os.ModeAppend)

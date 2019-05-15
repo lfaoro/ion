@@ -48,7 +48,7 @@ Linux and Windows.
 
 To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
 
-Helix2 comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
+ncrypt comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
 
 Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
 
