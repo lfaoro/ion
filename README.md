@@ -15,6 +15,22 @@ can change it. Ref: https://cloud.google.com/storage/docs/bucket-lock
 [![pipeline status](https://gitlab.com/lfaoro/ncrypt/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
 [![coverage report](https://gitlab.com/lfaoro/ncrypt/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
 
+## Quick start
+
+```bash
+# macOS (WIP)
+brew install lfaoro/tap/ncrypt
+
+# linux (WIP)
+curl ncryp.to/i | sh
+
+# developers
+go get -u github.com/lfaoro/ncrypt/...
+cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
+make install
+ncrypt -h
+make test
+```
 
 ## Easy to use
 
@@ -37,12 +53,14 @@ $ ncrypt -key genesis.doc
 🔑 Encryption-key: xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn
 🔒 Encrypted genesis.doc
 
-$ ncrypt genesis.doc (WIP)
+
+# WIP commands
+
+$ ncrypt genesis.doc
 🧮 Unable to decrypt using your local key
 🔑 Decryption-key: ***********
 🔓 Decrypted genesis.doc
 
-# WIP commands
 $ ncrypt lock 
 Cryptovariable: **********
 Locked .config/ncrypt/key
@@ -72,23 +90,6 @@ ncrypt comes with a HSM plugin for GCP and AWS. These providers offer HSM as a s
 Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
 
 > In progress: https://github.com/lfaoro/ncrypt/issues/1
-
-## Quick start
-
-```bash
-# developers
-go get -u github.com/lfaoro/ncrypt/...
-cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
-make install
-ncrypt -h
-make test
-
-# macOS (WIP)
-brew install ncrypt
-
-# linux (WIP)
-curl ncryp.to/i | sh
-```
 
 ## Contributing
 
