@@ -8,7 +8,7 @@ variables:
 test-ncrypt:
   image: golang:latest
   allow_failure: false
-  script:
+  script: |
     cd cmd/ncrypt
     make build
     make test
@@ -16,7 +16,7 @@ test-ncrypt:
 test-server:
   image: golang:latest
   allow_failure: false
-  script:
+  script: |
     cd cmd/server
     make test
 
