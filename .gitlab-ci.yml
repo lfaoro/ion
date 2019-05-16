@@ -12,3 +12,18 @@ test-ncrypt:
     cd cmd/ncrypt
     make build
     make test
+
+test-server:
+  image: golang:latest
+  allow_failure: true
+  script: |
+    cd cmd/server
+    make secret
+    make test
+
+.deploy-server:
+  image: google/cloud-sdk:latest
+  retry: 2
+  script: |
+    gcloud config set project ncrypt
+    gcloud functions deploy Stream --memory 128 --runtime go111 --trigger-http
