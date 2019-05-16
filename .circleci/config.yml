@@ -22,5 +22,6 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
-      - run: make
-      - run: make test
+      - run: cd cmd/ncrypt && make build
+      - run: cd cmd/ncrypt && make test
+      - run: cd cmd/server && make test
