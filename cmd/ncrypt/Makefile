@@ -19,6 +19,6 @@ test:
 
 tag?=""
 tag:
-	git tag -a $(tag) -m "$(tag)"
-	git push origin $(tag)
+	git tag -f -a $(tag) -m "$(tag)"
+	git push -f origin $(tag)
 
