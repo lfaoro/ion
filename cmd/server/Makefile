@@ -3,4 +3,4 @@ run:
 	go generate
 
 test:
-	go test -mod vendor
+	@go test -mod vendor .
