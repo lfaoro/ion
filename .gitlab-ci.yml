@@ -12,10 +12,3 @@ test-ncrypt:
     cd cmd/ncrypt
     make build
     make test
-
-test-server:
-  image: golang:latest
-  allow_failure: false
-  script: |
-    cd cmd/server
-    make test
