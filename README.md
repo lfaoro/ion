@@ -3,9 +3,14 @@
 
 🧬 ncrypt - a geeky & friendly way to simply encrypt locally & share.
 
-Consumer grade CLI-app, designed for every-user with love for the power-users.
+Consumer grade CLI-app, designed for every-user with love for the power-user.
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
+
+No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/ncrypt/tree/master/cmd/server) -- check it.
+
+Your data (in its ciphered form) lives for maximum 24 hours in a GCS Bucket. The retention policy is locked -- nobody 
+can change it. Ref: https://cloud.google.com/storage/docs/bucket-lock 
 
 [![pipeline status](https://gitlab.com/lfaoro/ncrypt/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
 [![coverage report](https://gitlab.com/lfaoro/ncrypt/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
@@ -22,8 +27,8 @@ $ ncrypt genesis.doc
 
 $ ncrypt upload genesis.doc
 ⬆️ Uploaded genesis.doc
+ℹ️ Expires in 24 hours
 ℹ️ Download reference: 2E3fde2a-genesis.doc
-ℹ️ Expires: 24 hours
 
 $ ncrypt download 2E3fde2a-genesis.doc
 ⬇️ Downloaded genesis.doc
@@ -32,9 +37,19 @@ $ ncrypt -key genesis.doc
 🔑 Encryption-key: xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn
 🔒 Encrypted genesis.doc
 
-$ ncrypt -key "xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn" genesis.doc
-🔑 Decryption-key: *******
+$ ncrypt genesis.doc (WIP)
+🧮 Unable to decrypt using your local key
+🔑 Decryption-key: ***********
 🔓 Decrypted genesis.doc
+
+# WIP commands
+$ ncrypt lock 
+Cryptovariable: **********
+Locked .config/ncrypt/key
+
+$ ncrypt unlock 
+Cryptovariable: **********
+Unlocked .config/ncrypt/key
 ```
 
 ## Leading encryption standard
@@ -77,7 +92,7 @@ curl ncryp.to/i | sh
 
 ## Contributing
 
-> Any help and suggestions are very welcome and appreciated.
+> Any help, feedback and suggestions are very welcome and greatly appreciated.
 > Start by opening an [issue](https://github.com/lfaoro/pkg/issues/new).
 
 ## Motivation
@@ -85,8 +100,8 @@ curl ncryp.to/i | sh
 It's hard to find a service one can completely trust -- everybody claims they're encrypting your data, although how 
 can you be sure? 
 
-I believe the only way to be sure about your data not being leaked in clear or mishandled is to see 
-exactly the steps that lead to its manipulation & encryption.
+I believe the only way trust what happens to your data is to see exactly the steps that lead to its manipulation, 
+encryption & storage.
 
 ncrypt is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
 
