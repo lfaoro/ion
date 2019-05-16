@@ -10,5 +10,15 @@ install:
 build:
 	@go build -mod vendor .
 
+release:
+	goreleaser release --snapshot --rm-dist
+
+
 test:
 	@go test -mod vendor -cover .
+
+tag?=""
+tag:
+	git tag -a $(tag) -m "$(tag)"
+	git push origin $(tag)
+

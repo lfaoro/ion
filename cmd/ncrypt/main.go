@@ -18,13 +18,17 @@ import (
 var (
 	// Header is what we append to encrypted files, in order to launch
 	// an encrypt or decrypt operation.
-	Header = "## ncrypt"
-	// Version is injected during the release process.
-	Version = "v1.0.0-alpha"
+	Header = "## ncrypted with love"
+	// version is injected during the release process.
+	version = "dev"
+	// commit is injected during the release process.
+	commit = "none"
+	// date is injected during the release process.
+	date = "unknown"
 )
 
 func getHeader() []byte {
-	header := fmt.Sprintf("%s %s\n", Header, Version)
+	header := fmt.Sprintf("%s\n", Header)
 	return []byte(header)
 }
 
@@ -32,7 +36,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "ncrypt"
 	app.Usage = "a geeky & friendly way to simply encrypt locally & share"
-	app.Version = Version
+	app.Version = fmt.Sprintf("%s %s %s", version, commit, date)
 	app.EnableBashCompletion = true
 
 	app.Before = func(c *cli.Context) error {
