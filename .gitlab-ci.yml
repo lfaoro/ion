@@ -1,0 +1,22 @@
+services:
+  - docker:dind
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  CI_DEBUG_TRACE: "false"
+
+test-ncrypt:
+  image: golang:latest
+  allow_failure: false
+  script:
+    cd cmd/ncrypt
+    make build
+    make test
+
+test-server:
+  image: golang:latest
+  allow_failure: false
+  script:
+    cd cmd/server
+    make test
+
