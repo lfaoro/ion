@@ -11,4 +11,4 @@ build:
 	@go build -mod vendor .
 
 test:
-	@go test -mod vendor .
+	@go test -mod vendor -cover .

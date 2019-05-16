@@ -7,6 +7,10 @@ Consumer grade CLI-app, designed for every-user with love for the power-users.
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
+[![pipeline status](https://gitlab.com/lfaoro/ncrypt/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
+[![coverage report](https://gitlab.com/lfaoro/ncrypt/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
+
+
 ## Easy to use
 
 ```bash
@@ -81,8 +85,8 @@ curl ncryp.to/i | sh
 It's hard to find a service one can completely trust -- everybody claims they're encrypting your data, although how 
 can you be sure? 
 
-I believe the only way to be sure about your data not being leaked in clear & mishandled is to see 
-exactly the steps that lead to its encryption.
+I believe the only way to be sure about your data not being leaked in clear or mishandled is to see 
+exactly the steps that lead to its manipulation & encryption.
 
 ncrypt is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
 
