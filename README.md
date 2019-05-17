@@ -72,7 +72,10 @@ Unlocked .config/ncrypt/key
 ## Leading encryption standard
 
 Authenticated Encryption with Additional Authenticated Data (AEAD) couples confidentiality and integrity. Using the 
-most popular AEAD today, AES-GCM.
+most popular AEAD today, AES-GCM. 
+
+The "AES-GCM" algorithm identifier is used to perform authenticated encryption and decryption using AES in 
+Galois/Counter Mode mode, as described in [NIST SP 800-38D](https://csrc.nist.gov/publications/detail/sp/800-38d/final)
 
 ref paper: https://eprint.iacr.org/2017/168.pdf
 

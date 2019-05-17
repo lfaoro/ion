@@ -25,7 +25,7 @@ var uploadCmd = cli.Command{
 			return errors.New("what should we upload?")
 		}
 
-		path := filePath(fileName)
+		path := constructPath(fileName)
 
 		data, err := ioutil.ReadFile(path)
 		if err != nil {

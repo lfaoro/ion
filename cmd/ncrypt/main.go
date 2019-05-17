@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
@@ -48,14 +49,17 @@ func main() {
 		return checkConfig()
 	}
 
+	// Global flags
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
-			Name:  "key,k",
-			Usage: "encrypts the file using the provided encryption key",
+			Name:   "key",
+			Usage:  "encrypts the file using the provided encryption key",
+			EnvVar: "NCRYPT_KEY",
 		},
 		cli.BoolFlag{
-			Name:  "backup,b",
-			Usage: "backups the file before encryption",
+			Name:   "backup",
+			Usage:  "backups the file before encryption",
+			EnvVar: "NCRYPT_BACKUP",
 		},
 	}
 
@@ -73,25 +77,36 @@ func main() {
 		var key string
 		if keyFlag {
 			rs := encrypto.RandomString(32)
-			fmt.Println("🔑 Encryption-key: ", rs)
 			key = rs
+			fmt.Println("🔑 Encryption-key: ", rs)
 		}
-		ce, err := newCryptoEngine(key)
+
+		engine, err := newCryptoEngine(key)
 		if err != nil {
 			return err
 		}
 
 		for _, fileName := range c.Args() {
-			// TODO: add check to identify if the fileName is a file
-			// if not a valid file fail with error
-			// Please, specify a file name.
-			path := filePath(fileName)
+			path := constructPath(fileName)
+
+			info, err := os.Stat(fileName)
+			if err != nil {
+				e := err.(*os.PathError)
+				return errors.Errorf("%s - %s", e.Path, e.Err.Error())
+			}
+			if info.IsDir() {
+				fmt.Printf("Sorry, I can't upload a whole directory. \nYou can tar it first though:\n\n")
+				fmt.Printf("$ tar -cvf %s.tar %s/\n", info.Name(), info.Name())
+				fmt.Printf("$ ncrypt %s.tar\n", info.Name())
+				os.Exit(1)
+			}
+
 			fileData, err := ioutil.ReadFile(path)
 			if err != nil {
 				return errors.Wrap(err, "unable to open file")
 			}
 			// VC (Visual Cue): Action
-			err = crypt(c, ce, fileName, path, fileData)
+			err = crypt(c, engine, fileName, path, fileData)
 			if err != nil {
 				return err
 			}
@@ -102,7 +117,8 @@ func main() {
 
 	err := app.Run(os.Args)
 	if err != nil {
-		check(err)
+		fmt.Fprintf(os.Stderr, "🔥 Error: %v\n", err)
+		os.Exit(1)
 	}
 }
 
@@ -149,38 +165,27 @@ func keyPath() string {
 
 func configKey() (string, error) {
 	keyFile := keyPath()
-	key := readFile(keyFile)
+	key, err := ioutil.ReadFile(keyFile)
+	check(err)
 	return string(key), nil
 }
 
-func filePath(fileName string) string {
-	// TODO: if path contains more than 1 '/' return
+func constructPath(fileName string) string {
+	// if the fileName contains more than 1 '/' char
+	// we can assume it's a full canonical path.
+	sub := strings.Split(fileName, "/")
+	if len(sub) > 1 {
+		return fileName
+	}
+
+	// obtain canonical path
 	wd, err := os.Getwd()
 	check(err)
 	return filepath.Join(wd, fileName)
 }
 
-func readFile(filePath string) (data []byte) {
-	b, err := ioutil.ReadFile(filePath)
-	check(err)
-	return b
-}
-
-func dataFromFile(f *os.File) ([]byte, error) {
-	var data []byte
-	_, err := f.Read(data)
-	if err != nil {
-		return []byte{}, err
-	}
-	if len(data) <= 0 {
-		return []byte{}, errors.New("file is empty")
-	}
-	return data, nil
-}
-
 func check(err error) {
 	if err != nil {
-		errors.WithStack(err)
 		fmt.Printf("🔥 Error: %v\n", err)
 		os.Exit(1)
 	}
