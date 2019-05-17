@@ -24,3 +24,7 @@ tag:
 	git tag -f -a $(tag) -m "$(tag)"
 	git push -f origin $(tag)
 
+
+lines:
+	@find . -type f -name "*.go" -not -path "./vendor/*" -not -path "./docs/*" \
+	 | xargs wc -l | sort

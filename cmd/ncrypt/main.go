@@ -33,6 +33,8 @@ var (
 	date = "unknown"
 )
 
+const configPath = ".config/ncrypt"
+
 func getHeader() []byte {
 	header := fmt.Sprintf("%s\n", Header)
 	return []byte(header)
@@ -74,13 +76,11 @@ func main() {
 		keyFlag := c.Bool("key")
 		backupFlag := c.Bool("backup")
 
-		var key string
+		var key []byte
 		if keyFlag {
-			rs := encrypto.RandomString(32)
-			key = rs
-			fmt.Println("🔑 Encryption-key: ", rs)
+			key, _ = encrypto.RandomBytes(32)
+			fmt.Println("🔑 Encryption-key: ", string(key))
 		}
-
 		engine, err := newCryptoEngine(key)
 		if err != nil {
 			return err
@@ -90,8 +90,6 @@ func main() {
 			if fileName == "" {
 				return errors.New("file/s to encrypt not provided")
 			}
-
-			path := constructPath(fileName)
 
 			info, err := os.Stat(fileName)
 			if err != nil {
@@ -105,6 +103,7 @@ func main() {
 				os.Exit(1)
 			}
 
+			path := constructPath(fileName)
 			data, err := ioutil.ReadFile(path)
 			if err != nil {
 				return errors.Wrap(err, "unable to open file")
@@ -140,9 +139,13 @@ func main() {
 	}
 }
 
-// TODO: refactor
 func checkConfig() error {
-	keyFile := keyPath()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	keyFile := filepath.Join(home, ".config/ncrypt/key")
+
 	if _, err := os.Stat(keyFile); os.IsNotExist(err) {
 		err = os.MkdirAll(filepath.Dir(keyFile), 0700)
 		if err != nil {
@@ -157,35 +160,35 @@ func checkConfig() error {
 			return errors.Wrap(err, "chmod")
 		}
 	}
-	f, err := os.OpenFile(keyFile, os.O_RDWR, os.ModeAppend)
+
+	n, err := ioutil.ReadFile(keyFile)
 	if err != nil {
 		return errors.Wrap(err, "config")
 	}
-	defer f.Close()
-	n, err := ioutil.ReadFile(keyFile)
+
 	if len(n) < 2 {
 		key := encrypto.RandomString(32)
+		err = ioutil.WriteFile(keyFile, []byte(key), 0600)
 		if err != nil {
 			return errors.Wrap(err, "config")
 		}
-		_, err = f.WriteString(key)
 	}
-	return err
+
+	return nil
 }
 
-func keyPath() string {
+func keyFromConfig() ([]byte, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		check(err)
 	}
-	return filepath.Join(home, ".config/ncrypt/key")
-}
 
-func configKey() (string, error) {
-	keyFile := keyPath()
+	keyFile := filepath.Join(home, configPath, "key")
+
 	key, err := ioutil.ReadFile(keyFile)
 	check(err)
-	return string(key), nil
+
+	return key, nil
 }
 
 func constructPath(fileName string) string {

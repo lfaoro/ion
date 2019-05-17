@@ -73,11 +73,11 @@ func decryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
 
 func removeHeader(data []byte) ([]byte, error) {
 	if !isEncrypted(data) {
-		return []byte{}, errors.New("invalid Helix2 file")
+		return []byte{}, errors.New("this file is not encrypted")
 	}
 	i := bytes.IndexByte(data, byte('\n'))
 	if i == -1 {
-		return []byte{}, errors.New("invalid Helix2 file")
+		return []byte{}, errors.New("invalid ncrypt file")
 	}
 	return data[i+1:], nil
 }
@@ -86,10 +86,11 @@ func addHeader(data []byte) []byte {
 	header := getHeader()
 	return append(header, data...)
 }
-func newCryptoEngine(key string) (*aesgcm.AESGCM, error) {
 
-	if key != "" {
-		aes, err := aesgcm.New(string(key))
+func newCryptoEngine(key []byte) (*aesgcm.AESGCM, error) {
+	// use provided key
+	if len(key) != 0 {
+		aes, err := aesgcm.New(key)
 		if err != nil {
 			return nil, err
 		}
@@ -101,7 +102,7 @@ func newCryptoEngine(key string) (*aesgcm.AESGCM, error) {
 		return nil, err
 	}
 
-	aes, err := aesgcm.New(string(key))
+	aes, err := aesgcm.New(key)
 	if err != nil {
 		return nil, err
 	}
