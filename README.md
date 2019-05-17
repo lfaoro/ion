@@ -1,9 +1,6 @@
-# WIP (work in progress) 
-> Experimenting with the idea and its utility at this stage. 
+# 🧬 ncrypt - a geeky & friendly way to simply encrypt locally & share.
 
-🧬 ncrypt - a geeky & friendly way to simply encrypt locally & share.
-
-Consumer grade CLI-app, designed for every-user with love for the power-user.
+Consumer grade CLI-app, designed for the every-user with love for the power-user.
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
@@ -32,7 +29,7 @@ ncrypt -h
 make test
 ```
 
-## Easy to use
+## Super easy to use
 
 ```bash
 $ ncrypt genesis.doc
