@@ -52,7 +52,6 @@ var lockCmd = cli.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("skey:", string(skey))
 
 		engine, err := aesgcm.New(skey)
 		if err != nil {

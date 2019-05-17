@@ -14,24 +14,27 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var key string
+var testKey []byte
 
 func Test_cryptCmd(t *testing.T) {
-	key = encrypto.RandomString(32)
+	key := encrypto.RandomString(32)
+	t.Log(key)
+	testKey = []byte(key)
 
 	fileName := "genesis.txt"
 	filePath := filepath.Join("testdata", fileName)
 	data, err := ioutil.ReadFile(filePath)
 	assert.Nil(t, err)
 
-	ce, err := newCryptoEngine(key)
+	engine, err := newCryptoEngine(testKey)
 	assert.Nil(t, err)
-	err = cryptoCmd(nil, ce, fileName, filePath, data)
+	err = cryptoCmd(engine, filePath, data)
 	assert.Nil(t, err)
 }
 
 func Test_decryptCmd(t *testing.T) {
-	ce, err := newCryptoEngine(key)
+	t.Log(string(testKey))
+	engine, err := newCryptoEngine(testKey)
 	assert.Nil(t, err)
 
 	fileName := "genesis.txt"
@@ -39,6 +42,6 @@ func Test_decryptCmd(t *testing.T) {
 	data, err := ioutil.ReadFile(filePath)
 	assert.Nil(t, err)
 
-	err = cryptoCmd(nil, ce, fileName, filePath, data)
+	err = cryptoCmd(engine, filePath, data)
 	assert.Nil(t, err)
 }

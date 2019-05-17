@@ -45,7 +45,6 @@ var unlockCmd = cli.Command{
 			return err
 		}
 
-		fmt.Println("skey:", string(skey))
 		engine, err := aesgcm.New(skey)
 		if err != nil {
 			return err
