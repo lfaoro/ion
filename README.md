@@ -18,7 +18,7 @@ can change it. Ref: https://cloud.google.com/storage/docs/bucket-lock
 ## Quick start
 
 ```bash
-# macOS (WIP)
+# macOS
 brew install lfaoro/tap/ncrypt
 
 # linux (WIP)
@@ -52,7 +52,6 @@ $ ncrypt download 2E3fde2a-genesis.doc
 $ ncrypt -key genesis.doc
 🔑 Encryption-key: xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn
 🔒 Encrypted genesis.doc
-
 
 # WIP commands
 

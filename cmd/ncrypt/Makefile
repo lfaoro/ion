@@ -13,6 +13,8 @@ build:
 release:
 	goreleaser release --snapshot --rm-dist
 
+reltest:
+	goreleaser release --snapshot --rm-dist --skip-publish
 
 test:
 	@go test -mod vendor -cover .

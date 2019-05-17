@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Leonardo Faoro. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
 package main
 
 import (
@@ -13,12 +14,16 @@ import (
 	"github.com/urfave/cli"
 
 	"github.com/lfaoro/pkg/encrypto"
+	"github.com/lfaoro/pkg/logger"
 )
+
+var log = logger.New("debug", nil)
 
 var (
 	// Header is what we append to encrypted files, in order to launch
 	// an encrypt or decrypt operation.
 	Header = "## ncrypted with love"
+
 	// version is injected during the release process.
 	version = "dev"
 	// commit is injected during the release process.
@@ -55,61 +60,10 @@ func main() {
 	}
 
 	app.Commands = []cli.Command{
-		{
-			Name:      "upload",
-			ShortName: "u",
-			Aliases:   []string{"up, upl"},
-			Usage:     "uploads the encrypted file to cloud storage.",
-			Action: func(c *cli.Context) error {
-				fileName := c.Args().Get(0)
-				if len(fileName) < 1 {
-					return errors.New("what should we upload?")
-				}
-				path := filePath(fileName)
-				data, err := ioutil.ReadFile(path)
-				if err != nil {
-					return err
-				}
-
-				_, err = uploadFile(fileName, data)
-				return err
-			},
-		},
-		{
-			Name:      "download",
-			ShortName: "d",
-			Aliases:   []string{"do, down"},
-			Usage:     "downloads the encrypted file using the reference-code.",
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:  "output,out,o",
-					Usage: "output path / where to store the downloaded file",
-				},
-			},
-			Action: func(c *cli.Context) error {
-				fileName := c.Args().Get(0)
-				err := downloadCmd(fileName)
-				return err
-			},
-		},
-		{
-			Name:      "lock",
-			ShortName: "lo",
-			Aliases:   []string{"loc"},
-			Usage:     "locks the encryption key with a user provided password.",
-			Action: func(c *cli.Context) error {
-				return nil
-			},
-		},
-		{
-			Name:      "unlock",
-			ShortName: "un",
-			Aliases:   []string{"unl, unlo"},
-			Usage:     "unlocks the encryption key.",
-			Action: func(c *cli.Context) error {
-				return nil
-			},
-		},
+		uploadCmd,
+		downloadCmd,
+		lockCmd,
+		unlockCmd,
 	}
 
 	app.Action = func(c *cli.Context) error {
@@ -222,4 +176,12 @@ func dataFromFile(f *os.File) ([]byte, error) {
 		return []byte{}, errors.New("file is empty")
 	}
 	return data, nil
+}
+
+func check(err error) {
+	if err != nil {
+		errors.WithStack(err)
+		fmt.Printf("🔥 Error: %v\n", err)
+		os.Exit(1)
+	}
 }

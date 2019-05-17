@@ -29,6 +29,6 @@ func Test_downloadFile(t *testing.T) {
 	if name == "" {
 		t.Skip("no file name provided")
 	}
-	err := downloadCmd(name)
+	err := downloadFile(name)
 	assert.Nil(t, err)
 }

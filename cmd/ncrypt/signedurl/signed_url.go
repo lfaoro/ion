@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Leonardo Faoro. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-package main
+package signedurl
 
 import (
 	"bytes"
@@ -27,8 +27,9 @@ var c = http.Client{
 	Timeout: time.Minute / 2,
 }
 
-func getSignedURL(fileName, fileMD5 string) (string, error) {
-	const streamURL = "https://us-central1-ncrypt.cloudfunctions.net/Stream"
+const streamURL = "https://us-central1-ncrypt.cloudfunctions.net/Stream"
+
+func Get(fileName, fileMD5 string) (string, error) {
 
 	req, err := http.NewRequest("GET", streamURL, nil)
 	if err != nil {
@@ -69,7 +70,7 @@ func getSignedURL(fileName, fileMD5 string) (string, error) {
 	return u.String(), nil
 }
 
-func uploadToSignedURL(data []byte, u string) error {
+func Upload(data []byte, u string) error {
 	if len(data) < 1 {
 		return errors.New("there's no data to upload")
 	}

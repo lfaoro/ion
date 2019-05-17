@@ -4,7 +4,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,39 +12,28 @@ import (
 	"path"
 	"strings"
 
-	"github.com/lfaoro/pkg/encrypto"
+	"github.com/pkg/errors"
+	"github.com/urfave/cli"
 )
 
-func uploadFile(fileName string, data []byte) (string, error) {
-	// bail if file is not encrypted
-	if !isEncrypted(data) {
-		// generate encryption key
-		// encrypt
-		// upload
-		// display key
-		return "", errors.New("won't upload unencrypted data")
-	}
-
-	rs := encrypto.RandomString(5)
-	uploadName := fmt.Sprintf("%v_%v", rs, fileName)
-	surl, err := getSignedURL(uploadName, "")
-	if err != nil {
-		return "", err
-	}
-
-	err = uploadToSignedURL(data, surl)
-	if err != nil {
-		return "", err
-	}
-
-	fmt.Println("⬆️ Uploaded   ", fileName)
-	fmt.Println("ℹ️ Reference  ", uploadName)
-	fmt.Println("ℹ️ Expiration ", "24 hours")
-
-	return uploadName, nil
+var downloadCmd = cli.Command{
+	Name:    "download",
+	Aliases: []string{"d, do, down"},
+	Usage:   "downloads the encrypted file using the reference-code.",
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "output, out, o",
+			Usage: "output path / where to store the downloaded file",
+		},
+	},
+	Action: func(c *cli.Context) error {
+		fileName := c.Args().Get(0)
+		err := downloadFile(fileName)
+		return err
+	},
 }
 
-func downloadCmd(fileName string) error {
+func downloadFile(fileName string) error {
 	if len(fileName) <= 6 {
 		return errors.New("invalid ncrypt file")
 	}
