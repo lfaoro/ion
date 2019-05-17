@@ -1,14 +1,13 @@
 // Copyright (c) 2019 Leonardo Faoro. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
 package main
 
 import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
@@ -16,64 +15,63 @@ import (
 	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
 
-func cryptCmd(c *cli.Context) error {
-	return nil
-}
-
-func crypt(c *cli.Context, ce *aesgcm.AESGCM, fileName, filePath string, data []byte) error {
+func cryptoCmd(c *cli.Context, engine *aesgcm.AESGCM, fileName, filePath string, data []byte) error {
 	if fileName == "" {
 		return errors.New("file/s to encrypt not provided")
 	}
-	var backupFlag bool
-	if c != nil {
-		backupFlag = c.Bool("backup")
-	}
 
 	if isEncrypted(data) {
-		// remove ncrypt header
-		cipherText, err := removeHeader(data)
-		if err != nil {
-			return err
-		}
-
-		plainText, err := ce.Decrypt(cipherText)
-		if err != nil {
-			return err
-		}
-
-		err = ioutil.WriteFile(filePath, plainText, 0600)
+		err := decryptFile(filePath, data, engine)
 		if err != nil {
 			return err
 		}
 
 		fmt.Printf("🔓 Decrypted %s\n", fileName)
 		return nil
-	} else {
-		if backupFlag {
-			tmp := os.TempDir()
-			backup := filepath.Join(tmp, "ncrypt", fileName)
-			err := ioutil.WriteFile(backup, data, 0600)
-			if err != nil {
-				return err
-			}
-			fmt.Printf("💾 Backed up %s", fileName)
-		}
-
-		cipherText, err := ce.Encrypt(data)
-		if err != nil {
-			return err
-		}
-
-		cipherText = addHeader(cipherText)
-
-		err = ioutil.WriteFile(filePath, cipherText, 0600)
-		if err != nil {
-			return err
-		}
-
-		fmt.Printf("🔒 Encrypted %s\n", fileName)
-		return nil
 	}
+
+	err := encryptFile(filePath, data, engine)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("🔒 Encrypted %s\n", fileName)
+	return nil
+}
+
+func encryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
+	cipherText, err := engine.Encrypt(data)
+	if err != nil {
+		return err
+	}
+
+	cipherText = addHeader(cipherText)
+
+	err = ioutil.WriteFile(filePath, cipherText, 0600)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+func decryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
+	// remove ncrypt header
+	cipherText, err := removeHeader(data)
+	if err != nil {
+		return err
+	}
+
+	plainText, err := engine.Decrypt(cipherText)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(filePath, plainText, 0600)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func removeHeader(data []byte) ([]byte, error) {

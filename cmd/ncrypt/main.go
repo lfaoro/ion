@@ -71,8 +71,8 @@ func main() {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		// key flag
 		keyFlag := c.Bool("key")
+		backupFlag := c.Bool("backup")
 
 		var key string
 		if keyFlag {
@@ -101,12 +101,26 @@ func main() {
 				os.Exit(1)
 			}
 
-			fileData, err := ioutil.ReadFile(path)
+			data, err := ioutil.ReadFile(path)
 			if err != nil {
 				return errors.Wrap(err, "unable to open file")
 			}
-			// VC (Visual Cue): Action
-			err = crypt(c, engine, fileName, path, fileData)
+
+			if backupFlag {
+				tmp := os.TempDir()
+				backup := filepath.Join(tmp, "ncrypt", fileName)
+				err := os.MkdirAll(filepath.Dir(backup), 0700)
+				if err != nil {
+					return err
+				}
+				err = ioutil.WriteFile(backup, data, 0600)
+				if err != nil {
+					return err
+				}
+				fmt.Printf("💾 Backed up %s", fileName)
+			}
+
+			err = cryptoCmd(c, engine, fileName, path, data)
 			if err != nil {
 				return err
 			}

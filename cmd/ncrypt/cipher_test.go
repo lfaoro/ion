@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Leonardo Faoro. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
 package main
 
 import (
@@ -25,7 +26,7 @@ func Test_cryptCmd(t *testing.T) {
 
 	ce, err := newCryptoEngine(key)
 	assert.Nil(t, err)
-	err = crypt(nil, ce, fileName, filePath, data)
+	err = cryptoCmd(nil, ce, fileName, filePath, data)
 	assert.Nil(t, err)
 }
 
@@ -38,6 +39,6 @@ func Test_decryptCmd(t *testing.T) {
 	data, err := ioutil.ReadFile(filePath)
 	assert.Nil(t, err)
 
-	err = crypt(nil, ce, fileName, filePath, data)
+	err = cryptoCmd(nil, ce, fileName, filePath, data)
 	assert.Nil(t, err)
 }
