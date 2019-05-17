@@ -25,7 +25,7 @@ brew install lfaoro/tap/ncrypt
 curl ncryp.to/i | sh
 
 # developers
-go get -u github.com/lfaoro/ncrypt/...
+go get -u github.com/lfaoro/ncrypt/cmd/ncrypt
 cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
 make install
 ncrypt -h
