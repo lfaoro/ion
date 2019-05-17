@@ -87,6 +87,10 @@ func main() {
 		}
 
 		for _, fileName := range c.Args() {
+			if fileName == "" {
+				return errors.New("file/s to encrypt not provided")
+			}
+
 			path := constructPath(fileName)
 
 			info, err := os.Stat(fileName)
@@ -120,7 +124,7 @@ func main() {
 				fmt.Printf("💾 Backed up %s", fileName)
 			}
 
-			err = cryptoCmd(c, engine, fileName, path, data)
+			err = cryptoCmd(engine, path, data)
 			if err != nil {
 				return err
 			}

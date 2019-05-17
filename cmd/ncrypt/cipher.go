@@ -8,18 +8,15 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/pkg/errors"
-	"github.com/urfave/cli"
 
 	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
 
-func cryptoCmd(c *cli.Context, engine *aesgcm.AESGCM, fileName, filePath string, data []byte) error {
-	if fileName == "" {
-		return errors.New("file/s to encrypt not provided")
-	}
-
+func cryptoCmd(engine *aesgcm.AESGCM, filePath string, data []byte) error {
+	fileName := filepath.Base(filePath)
 	if isEncrypted(data) {
 		err := decryptFile(filePath, data, engine)
 		if err != nil {
