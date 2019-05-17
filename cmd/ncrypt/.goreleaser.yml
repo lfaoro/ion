@@ -12,7 +12,7 @@ builds:
     flags:
       - -mod=vendor
     goos:
-      - macos
+      - darwin
       - linux
       - freebsd
       - windows
