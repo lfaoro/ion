@@ -53,13 +53,6 @@ $ ncrypt -key genesis.doc
 🔑 Encryption-key: xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn
 🔒 Encrypted genesis.doc
 
-# WIP commands
-
-$ ncrypt genesis.doc
-🧮 Unable to decrypt using your local key
-🔑 Decryption-key: ***********
-🔓 Decrypted genesis.doc
-
 $ ncrypt lock 
 Cryptovariable: **********
 Locked .config/ncrypt/key
@@ -67,31 +60,24 @@ Locked .config/ncrypt/key
 $ ncrypt unlock 
 Cryptovariable: **********
 Unlocked .config/ncrypt/key
+
+# WIP commands
+
+$ ncrypt genesis.doc
+🧮 Unable to decrypt using your local key
+🔑 Decryption-key: ***********
+🔓 Decrypted genesis.doc
 ```
 
 ## Leading encryption standard
 
 Authenticated Encryption with Additional Authenticated Data (AEAD) couples confidentiality and integrity. Using the 
-most popular AEAD today, AES-GCM. 
+most popular AEAD today: AES-GCM. 
 
 The "AES-GCM" algorithm identifier is used to perform authenticated encryption and decryption using AES in 
 Galois/Counter Mode mode, as described in [NIST SP 800-38D](https://csrc.nist.gov/publications/detail/sp/800-38d/final)
 
 ref paper: https://eprint.iacr.org/2017/168.pdf
-
-## Compliance (WIP)
-
-Right now ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission
-. Ideally we'll have the keys stored in macOS keychain -- although I don't know if there's something comparable for 
-Linux and Windows.
-
-To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
-
-ncrypt comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
-
-Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
-
-> In progress: https://github.com/lfaoro/ncrypt/issues/1
 
 ## Contributing
 
@@ -109,3 +95,17 @@ encryption & storage.
 ncrypt is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
 
 Designed with user-friendliness in mind, aspiring to be used also by non-dev users.
+
+## Compliance (WIP)
+
+Right now ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission
+. Ideally we'll have the keys stored in macOS keychain -- although I don't know if there's something comparable for 
+Linux and Windows.
+
+To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
+
+ncrypt comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
+
+Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
+
+> In progress: https://github.com/lfaoro/ncrypt/issues/1
