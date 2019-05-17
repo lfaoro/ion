@@ -86,8 +86,8 @@ func addHeader(data []byte) []byte {
 	header := getHeader()
 	return append(header, data...)
 }
-
 func newCryptoEngine(key string) (*aesgcm.AESGCM, error) {
+
 	if key != "" {
 		aes, err := aesgcm.New(string(key))
 		if err != nil {
@@ -96,7 +96,7 @@ func newCryptoEngine(key string) (*aesgcm.AESGCM, error) {
 		return aes, nil
 	}
 
-	key, err := configKey()
+	key, err := keyFromConfig()
 	if err != nil {
 		return nil, err
 	}

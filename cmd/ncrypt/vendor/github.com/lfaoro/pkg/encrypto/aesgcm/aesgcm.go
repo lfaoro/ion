@@ -32,17 +32,18 @@ var _ encrypto.Cryptor = &AESGCM{}
 // The key argument should be the AES key,
 // either 16, 24, or 32 bytes to select
 // AES-128, AES-192, or AES-256.
-func New(key string) (*AESGCM, error) {
+func New(key []byte) (*AESGCM, error) {
 	switch len(key) {
 	default:
 		return nil, errors.Errorf("AESGCM: key size invalid %d", len(key))
 	case 16, 24, 32:
 	}
-	_key := []byte(key)
-	_cipher, err := aes.NewCipher(_key)
+
+	_cipher, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, errors.Wrap(err, "AESGCM: unable to create a new cipher")
 	}
+
 	return &AESGCM{cipher: _cipher}, nil
 }
 
@@ -53,11 +54,14 @@ func (ag *AESGCM) Encrypt(plainText []byte) (cypherText []byte, err error) {
 	if err != nil {
 		return []byte{}, errors.Wrap(err, "unable to wrap cipher in GCM")
 	}
+
 	nonce := make([]byte, gcm.NonceSize())
 	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
 		return []byte{}, errors.Wrap(err, "unable to read random nonce")
 	}
+
 	b := gcm.Seal(nonce, nonce, []byte(plainText), nil)
+
 	return b, nil
 }
 
@@ -68,10 +72,13 @@ func (ag *AESGCM) Decrypt(cipherText []byte) (plainText []byte, err error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to wrap cipher in GCM")
 	}
+
 	nonceSize := gcm.NonceSize()
 	if len(cipherText) < nonceSize {
 		return nil, errors.Wrap(err, "unable to read random nonce")
 	}
+
 	nonce, cipherplainText := cipherText[:nonceSize], cipherText[nonceSize:]
+
 	return gcm.Open(nil, nonce, cipherplainText, nil)
 }
