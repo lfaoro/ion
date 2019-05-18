@@ -31,9 +31,12 @@ var _ encrypto.Cryptor = &AESGCM{}
 //
 // ref: https://github.com/gtank/cryptopasta/blob/master/encrypt.go
 func New(key *[32]byte) (*AESGCM, error) {
+	if key == nil {
+		return nil, errors.New("aesgcm: invalid key")
+	}
 	_block, err := aes.NewCipher(key[:])
 	if err != nil {
-		return nil, errors.Wrap(err, "AESGCM: unable to create a new cipher")
+		return nil, errors.Wrap(err, "aesgcm: unable to create a new cipher")
 	}
 
 	return &AESGCM{block: _block}, nil
