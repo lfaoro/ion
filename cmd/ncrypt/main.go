@@ -77,7 +77,7 @@ func main() {
 		keyFlag := c.Bool("key")
 		backupFlag := c.Bool("backup")
 
-		var key *[32]byte
+		var key = new([32]byte)
 		if keyFlag {
 			// if --key is defined, generate a new key
 			k := encrypto.NewEncryptionKey()

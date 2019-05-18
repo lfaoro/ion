@@ -53,7 +53,7 @@ var lockCmd = cli.Command{
 			return err
 		}
 
-		var engineKey *[32]byte
+		var engineKey = new([32]byte)
 		copy(engineKey[:], skey)
 		engine, err := aesgcm.New(engineKey)
 		if err != nil {

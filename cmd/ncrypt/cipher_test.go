@@ -10,31 +10,30 @@ import (
 	"testing"
 
 	"github.com/lfaoro/pkg/encrypto"
+	"github.com/lfaoro/pkg/encrypto/aesgcm"
 
 	"github.com/stretchr/testify/assert"
 )
 
-var testKey []byte
+var testKey *[32]byte
 
 func Test_cryptCmd(t *testing.T) {
-	key := encrypto.RandomString(32)
-	t.Log(key)
-	testKey = []byte(key)
+	key := encrypto.NewEncryptionKey()
+	testKey = key
 
 	fileName := "genesis.txt"
 	filePath := filepath.Join("testdata", fileName)
 	data, err := ioutil.ReadFile(filePath)
 	assert.Nil(t, err)
 
-	engine, err := newCryptoEngine(testKey)
+	engine, err := aesgcm.New(testKey)
 	assert.Nil(t, err)
 	err = cryptoCmd(engine, filePath, data)
 	assert.Nil(t, err)
 }
 
 func Test_decryptCmd(t *testing.T) {
-	t.Log(string(testKey))
-	engine, err := newCryptoEngine(testKey)
+	engine, err := aesgcm.New(testKey)
 	assert.Nil(t, err)
 
 	fileName := "genesis.txt"
