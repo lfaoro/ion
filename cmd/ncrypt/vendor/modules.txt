@@ -9,7 +9,7 @@ github.com/davecgh/go-spew/spew
 github.com/gobuffalo/uuid
 # github.com/gofrs/uuid v3.2.0+incompatible
 github.com/gofrs/uuid
-# github.com/golang/protobuf v1.2.0
+# github.com/golang/protobuf v1.3.1
 github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes/any
@@ -19,7 +19,7 @@ github.com/golang/protobuf/protoc-gen-go/descriptor
 github.com/golang/protobuf/ptypes/struct
 # github.com/googleapis/gax-go/v2 v2.0.4
 github.com/googleapis/gax-go/v2
-# github.com/hashicorp/golang-lru v0.5.0
+# github.com/hashicorp/golang-lru v0.5.1
 github.com/hashicorp/golang-lru/simplelru
 # github.com/lfaoro/pkg v0.4.0 => /Users/lfaoro/go/src/github.com/lfaoro/pkg
 github.com/lfaoro/pkg/encrypto
@@ -51,31 +51,31 @@ go.opencensus.io/internal
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
 go.opencensus.io
-# golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
+# golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh/terminal
 golang.org/x/crypto/pbkdf2
-# golang.org/x/net v0.0.0-20190311183353-d8887717615a
-golang.org/x/net/context
+# golang.org/x/net v0.0.0-20190514140710-3ec191127204
 golang.org/x/net/trace
 golang.org/x/net/internal/timeseries
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/context/ctxhttp
+golang.org/x/net/context
 golang.org/x/net/http/httpguts
 golang.org/x/net/idna
-# golang.org/x/oauth2 v0.0.0-20190402181905-9f3314589c9a
+# golang.org/x/oauth2 v0.0.0-20190517181255-950ef44c6e07
 golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sync v0.0.0-20190227155943-e225da77a7e6
+# golang.org/x/sync v0.0.0-20190423024810-112230192c58
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
+# golang.org/x/sys v0.0.0-20190516110030-61b9204099cb
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
+# golang.org/x/text v0.3.2
 golang.org/x/text/secure/bidirule
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
@@ -90,7 +90,7 @@ google.golang.org/api/transport/grpc
 google.golang.org/api/transport/http
 google.golang.org/api/googleapi/transport
 google.golang.org/api/transport/http/internal/propagation
-# google.golang.org/appengine v1.4.0
+# google.golang.org/appengine v1.6.0
 google.golang.org/appengine
 google.golang.org/appengine/socket
 google.golang.org/appengine/urlfetch
@@ -103,13 +103,14 @@ google.golang.org/appengine/internal/base
 google.golang.org/appengine/internal/datastore
 google.golang.org/appengine/internal/log
 google.golang.org/appengine/internal/remote_api
-# google.golang.org/genproto v0.0.0-20190508193815-b515fa19cec8
+# google.golang.org/genproto v0.0.0-20190516172635-bb713bdc0e52
 google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/monitoredres
 google.golang.org/genproto/googleapis/rpc/status
+google.golang.org/genproto/googleapis/api
 google.golang.org/genproto/googleapis/api/label
-# google.golang.org/grpc v1.19.0
+# google.golang.org/grpc v1.20.1
 google.golang.org/grpc
 google.golang.org/grpc/codes
 google.golang.org/grpc/metadata
@@ -123,6 +124,7 @@ google.golang.org/grpc/encoding/proto
 google.golang.org/grpc/grpclog
 google.golang.org/grpc/internal
 google.golang.org/grpc/internal/backoff
+google.golang.org/grpc/internal/balancerload
 google.golang.org/grpc/internal/binarylog
 google.golang.org/grpc/internal/channelz
 google.golang.org/grpc/internal/envconfig
