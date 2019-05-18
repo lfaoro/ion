@@ -87,29 +87,6 @@ func addHeader(data []byte) []byte {
 	return append(header, data...)
 }
 
-func newCryptoEngine(key []byte) (*aesgcm.AESGCM, error) {
-	// use provided key
-	if len(key) != 0 {
-		aes, err := aesgcm.New(key)
-		if err != nil {
-			return nil, err
-		}
-		return aes, nil
-	}
-
-	key, err := keyFromConfig()
-	if err != nil {
-		return nil, err
-	}
-
-	aes, err := aesgcm.New(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return aes, nil
-}
-
 func isEncrypted(data []byte) bool {
 	return bytes.Contains(data, getHeader())
 }

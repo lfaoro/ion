@@ -15,6 +15,7 @@ import (
 	"github.com/urfave/cli"
 
 	"github.com/lfaoro/pkg/encrypto"
+	"github.com/lfaoro/pkg/encrypto/aesgcm"
 	"github.com/lfaoro/pkg/logger"
 )
 
@@ -76,12 +77,21 @@ func main() {
 		keyFlag := c.Bool("key")
 		backupFlag := c.Bool("backup")
 
-		var key []byte
+		var key *[32]byte
 		if keyFlag {
-			key, _ = encrypto.RandomBytes(32)
-			fmt.Println("🔑 Encryption-key: ", string(key))
+			// if --key is defined, generate a new key
+			k := encrypto.NewEncryptionKey()
+			fmt.Println("🔑 Encryption-key: ", string(k[:]))
+			key = k
+		} else {
+			// otherwise retrieve the key from the config
+			k, err := keyFromConfig()
+			if err != nil {
+				return err
+			}
+			copy(key[:], k)
 		}
-		engine, err := newCryptoEngine(key)
+		engine, err := aesgcm.New(key)
 		if err != nil {
 			return err
 		}
@@ -180,13 +190,19 @@ func checkConfig() error {
 func keyFromConfig() ([]byte, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		check(err)
+		return nil, err
 	}
 
 	keyFile := filepath.Join(home, configPath, "key")
 
 	key, err := ioutil.ReadFile(keyFile)
-	check(err)
+	if err != nil {
+		return nil, err
+	}
+
+	if isEncrypted(key) {
+		return nil, errors.New("the encryption key is Locked, use:\n$ ncrypt unlock")
+	}
 
 	return key, nil
 }

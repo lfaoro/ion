@@ -45,7 +45,9 @@ var unlockCmd = cli.Command{
 			return err
 		}
 
-		engine, err := aesgcm.New(skey)
+		var engineKey *[32]byte
+		copy(engineKey[:], skey)
+		engine, err := aesgcm.New(engineKey)
 		if err != nil {
 			return err
 		}

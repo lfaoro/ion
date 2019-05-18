@@ -36,7 +36,7 @@ var lockCmd = cli.Command{
 		saltPath := path.Join(home, configPath, "salt")
 
 		if _, err = os.Stat(saltPath); os.IsNotExist(err) {
-			salt, _ := encrypto.RandomBytes(16)
+			salt := encrypto.RandomBytes(16)
 			err = ioutil.WriteFile(saltPath, salt, 0600)
 			if err != nil {
 				return err
@@ -53,7 +53,9 @@ var lockCmd = cli.Command{
 			return err
 		}
 
-		engine, err := aesgcm.New(skey)
+		var engineKey *[32]byte
+		copy(engineKey[:], skey)
+		engine, err := aesgcm.New(engineKey)
 		if err != nil {
 			return err
 		}
