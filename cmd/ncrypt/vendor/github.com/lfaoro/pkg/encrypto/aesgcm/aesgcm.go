@@ -17,68 +17,62 @@ import (
 	"github.com/lfaoro/pkg/encrypto"
 )
 
-// AESGCM mplements the Encrypt/Decrypt methods
+// AESGCM implements the Encrypt/Decrypt methods
 // using AES-GCM: https://eprint.iacr.org/2015/102.pdf
 type AESGCM struct {
-	// either 16, 24, or 32 bytes to select AES-128, AES-192, or AES-256.
-	cipher cipher.Block
+	block cipher.Block
 }
 
 // validate interface conformity.
 var _ encrypto.Cryptor = &AESGCM{}
 
-// New makes a new AES/GCM Cryptor.
+// New makes a new AES/GCM Cryptor. In order to select AES-256, a 32-byte key
+// is enforced.
 //
-// The key argument should be the AES key,
-// either 16, 24, or 32 bytes to select
-// AES-128, AES-192, or AES-256.
-func New(key []byte) (*AESGCM, error) {
-	switch len(key) {
-	default:
-		return nil, errors.Errorf("AESGCM: key size invalid %d", len(key))
-	case 16, 24, 32:
-	}
-
-	_cipher, err := aes.NewCipher(key)
+// ref: https://github.com/gtank/cryptopasta/blob/master/encrypt.go
+func New(key *[32]byte) (*AESGCM, error) {
+	_block, err := aes.NewCipher(key[:])
 	if err != nil {
 		return nil, errors.Wrap(err, "AESGCM: unable to create a new cipher")
 	}
 
-	return &AESGCM{cipher: _cipher}, nil
+	return &AESGCM{block: _block}, nil
 }
 
-// Encrypt ciphers the plainText using the provided 16, 24 or 32 bytes key
-// with AES/GCM and returns a base64 encoded string.
+// Encrypt encrypts data using 256-bit AES-GCM.  This both hides the content of
+// the data and provides a check that it hasn't been altered. Output takes the
+// form nonce|ciphertext|tag where '|' indicates concatenation.
 func (ag *AESGCM) Encrypt(plainText []byte) (cypherText []byte, err error) {
-	gcm, err := cipher.NewGCM(ag.cipher)
-	if err != nil {
-		return []byte{}, errors.Wrap(err, "unable to wrap cipher in GCM")
-	}
-
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return []byte{}, errors.Wrap(err, "unable to read random nonce")
-	}
-
-	b := gcm.Seal(nonce, nonce, []byte(plainText), nil)
-
-	return b, nil
-}
-
-// Decrypt deciphers the provided base64 encoded and AES/GCM ciphered
-// data returning the original plainText string.
-func (ag *AESGCM) Decrypt(cipherText []byte) (plainText []byte, err error) {
-	gcm, err := cipher.NewGCM(ag.cipher)
+	gcm, err := cipher.NewGCM(ag.block)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to wrap cipher in GCM")
 	}
 
-	nonceSize := gcm.NonceSize()
-	if len(cipherText) < nonceSize {
+	nonce := make([]byte, gcm.NonceSize())
+	_, err = io.ReadFull(rand.Reader, nonce)
+	if err != nil {
 		return nil, errors.Wrap(err, "unable to read random nonce")
 	}
 
-	nonce, cipherplainText := cipherText[:nonceSize], cipherText[nonceSize:]
+	return gcm.Seal(nonce, nonce, plainText, nil), nil
+}
 
-	return gcm.Open(nil, nonce, cipherplainText, nil)
+// Decrypt decrypts data using 256-bit AES-GCM.  This both hides the content of
+// the data and provides a check that it hasn't been altered. Expects input
+// form nonce|ciphertext|tag where '|' indicates concatenation.
+func (ag *AESGCM) Decrypt(cipherText []byte) (plainText []byte, err error) {
+	gcm, err := cipher.NewGCM(ag.block)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to wrap cipher in GCM")
+	}
+
+	if len(cipherText) < gcm.NonceSize() {
+		return nil, errors.Wrap(err, "unable to read random nonce")
+	}
+
+	return gcm.Open(nil,
+		cipherText[:gcm.NonceSize()],
+		cipherText[gcm.NonceSize():],
+		nil,
+	)
 }

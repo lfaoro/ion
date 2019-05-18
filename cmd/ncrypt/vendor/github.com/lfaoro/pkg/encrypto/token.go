@@ -12,7 +12,7 @@ import (
 
 func NewToken(len int, isTest bool) string {
 	// ensure the generator is seeded
-	_, _ = RandomBytes(32)
+	RandomBytes(32)
 	prefix := "tok_"
 	if isTest {
 		prefix += "test_"
