@@ -34,17 +34,18 @@ var downloadCmd = cli.Command{
 }
 
 func downloadFile(fileName string) error {
+	// we append a len(6) string to every file
 	if len(fileName) <= 6 {
 		return errors.New("invalid ncrypt file")
 	}
 
-	uri, err := url.ParseRequestURI("https://storage.cloud.google.com/ncrypt-users")
+	uri, err := url.ParseRequestURI("https://storage.googleapis.com/ncrypt-users")
 	if err != nil {
 		return err
 	}
 
-	uri.Path = path.Join(fileName)
-	// fmt.Println("ℹ️ Reference URL ", uri.String())
+	uri.Path = path.Join(uri.Path, fileName)
+	fmt.Println("ℹ️ Reference URL ", uri.String())
 
 	res, err := http.Get(uri.String())
 	if err != nil {
@@ -61,17 +62,25 @@ func downloadFile(fileName string) error {
 		fileName = path.Join(tmpPath, fileName)
 	}
 
+	if res.StatusCode > 299 {
+		return errors.Wrap(err, "download:")
+	}
+
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(fileName, b, 0600)
+	if !isEncrypted(b) {
+		return errors.New("downloaded unecrypted content, contact: lfaoro+support@gmail.com")
+	}
+
+	fn := fileName[6:]
+	err = ioutil.WriteFile(fn, b, 0600)
 	if err != nil {
 		return err
 	}
 
-	fn := fileName[6:]
 	fmt.Println("⬇️ Downloaded ", fn)
 
 	return nil
