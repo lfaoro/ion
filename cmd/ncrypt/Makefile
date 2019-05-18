@@ -12,7 +12,7 @@ build:
 	@go build -mod vendor .
 
 release:
-	goreleaser release --snapshot --rm-dist
+	goreleaser release --rm-dist
 
 reltest:
 	goreleaser release --snapshot --rm-dist --skip-publish

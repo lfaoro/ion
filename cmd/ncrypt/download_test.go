@@ -5,6 +5,8 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
+	"path"
 	"path/filepath"
 	"testing"
 
@@ -29,6 +31,11 @@ func Test_downloadFile(t *testing.T) {
 	if name == "" {
 		t.Skip("no file name provided")
 	}
-	err := downloadFile(name)
+
+	tmpPath := path.Join(os.TempDir(), "ncrypt")
+	err := os.MkdirAll(tmpPath, 0700)
+	assert.Nil(t, err)
+	tmpPath = path.Join(tmpPath, name)
+	err = downloadFile(name, tmpPath)
 	assert.Nil(t, err)
 }
