@@ -2,32 +2,50 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package crypt
+package ccrypt
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
 
-var header = []byte("## ncrypted with love")
+var header = []byte("## ncrypted with love\n")
 
 func Encrypt(plaintext []byte, key *[32]byte) ([]byte, error) {
 	engine, err := aesgcm.New(key)
+	if err != nil {
+		return nil, err
+	}
+
 	ciphertext, err := engine.Encrypt(plaintext)
+	if err != nil {
+		return nil, err
+	}
+
 	ciphertext = addHeader(ciphertext)
+	fmt.Println(string(ciphertext[:20]))
+
 	return ciphertext, err
+}
+
+func Decrypt(ciphertext []byte, key *[32]byte) ([]byte, error) {
+	fmt.Println("key", string(key[:]))
+	engine, err := aesgcm.New(key)
+	if err != nil {
+		return nil, err
+	}
+	ciphertext = removeHeader(ciphertext)
+	plaintext, err := engine.Decrypt(ciphertext)
+	if err != nil {
+		return nil, err
+	}
+	return plaintext, err
 }
 
 func addHeader(data []byte) []byte {
 	return append(header, data...)
-}
-
-func Decrypt(ciphertext []byte, key *[32]byte) ([]byte, error) {
-	engine, err := aesgcm.New(key)
-	plaintext, err := engine.Decrypt(ciphertext)
-	plaintext = removeHeader(plaintext)
-	return plaintext, err
 }
 
 func removeHeader(data []byte) []byte {

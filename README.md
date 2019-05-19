@@ -1,66 +1,75 @@
-# 🧬 ncrypt - a geeky & friendly way to simply encrypt locally & share.
+# 🧬 lsh - upload and share large data objects
 
-Consumer grade CLI-app, designed for the every-user with love for the power-user.
+> End to end encrypted, if you want...
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
-No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/ncrypt/tree/master/cmd/server) -- check it.
+No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/lsh/tree/master/cmd/server) -- 
+check it.
 
-Your data (in its ciphered form) lives for maximum 24 hours in a GCS Bucket. The retention policy is locked -- nobody 
-can change it. Ref: https://cloud.google.com/storage/docs/bucket-lock 
+Your data (in its ciphered form) lives for maximum 24h in a GCS bucket. 
 
-[![pipeline status](https://gitlab.com/lfaoro/ncrypt/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
-[![coverage report](https://gitlab.com/lfaoro/ncrypt/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ncrypt/commits/master)
+[![pipeline status](https://gitlab.com/lfaoro/lsh/badges/master/pipeline.svg)](https://gitlab
+.com/lfaoro/lsh/commits/master)
+[![coverage report](https://gitlab.com/lfaoro/lsh/badges/master/coverage.svg)](https://gitlab
+.com/lfaoro/lsh/commits/master)
 
 ## Quick start
 
 ```bash
 # macOS
-brew install lfaoro/tap/ncrypt
+brew install lfaoro/tap/lsh
 
 # linux (WIP)
-curl ncryp.to/i | sh
+curl lsh.io/i | sh
 
 # developers
-go get -u github.com/lfaoro/ncrypt/cmd/ncrypt
-cd $GOPATH/src/github.com/lfaoro/ncrypt/cmd/ncrypt
+go get -u github.com/lfaoro/lsh/cmd/lsh
+cd $GOPATH/src/github.com/lfaoro/lsh/cmd/lsh
 make install
-ncrypt -h
+lsh -h
 make test
 ```
 
-## Super easy to use
+## Quick usage
 
 ```bash
-$ ncrypt genesis.doc
-🔒 Encrypted genesis.doc
+lsh up genesis.txt -to hello@lsh.io
+```
 
-$ ncrypt genesis.doc
-🔓 Decrypted genesis.doc
+Subject: You've got data!
+Body: Download your data from https://lsh.io/lsYuhN8h_genesis.txt
 
-$ ncrypt upload genesis.doc
-⬆️ Uploaded genesis.doc
-ℹ️ Expires in 24 hours
-ℹ️ Download reference: 2E3fde2a-genesis.doc
+## Usage
 
-$ ncrypt download 2E3fde2a-genesis.doc
-⬇️ Downloaded genesis.doc
+```bash
+$ lsh upload genesis.doc # short: lsh u
+Success: https://lsh.io/lsYuhN8h_genesis.txt
 
-$ ncrypt -key genesis.doc
-🔑 Encryption-key: xy-TdOfXeQ5otTB0kXKLHbeYwpNCo0rn
-🔒 Encrypted genesis.doc
+$ lsh download 2E3fde2a-genesis.doc # short: lsh d
+Downloaded genesis.doc
 
-$ ncrypt lock 
-Cryptovariable: **********
-Locked .config/ncrypt/key
+$ lsh encrypt genesis.doc # short: lsh en
+Encrypted genesis.doc
 
-$ ncrypt unlock 
-Cryptovariable: **********
-Unlocked .config/ncrypt/key
+$ lsh decrypt genesis.doc # short: lsh de
+Decrypted genesis.doc
+
+$ lsh u -p genesis.doc
+Secret-key: *********
+Success: https://lsh.io/lsYuhN8h_genesis.txt
+
+$ lsh lock 
+Password: **********
+Locked .config/lsh/key
+
+$ lsh unlock 
+Password: **********
+Unlocked .config/lsh/key
 
 # WIP commands
 
-$ ncrypt genesis.doc
+$ lsh genesis.doc
 🧮 Unable to decrypt using your local key
 🔑 Decryption-key: ***********
 🔓 Decrypted genesis.doc
@@ -83,26 +92,23 @@ ref paper: https://eprint.iacr.org/2017/168.pdf
 
 ## Motivation
 
-It's hard to find a service one can completely trust -- everybody claims they're encrypting your data, although how 
-can you be sure? 
+It's hard to find a service one can completely trust -- everybody claims they're encrypting your data, although how can you be sure? 
 
 I believe the only way trust what happens to your data is to see exactly the steps that lead to its manipulation, 
 encryption & storage.
 
-ncrypt is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
-
-Designed with user-friendliness in mind, aspiring to be used also by non-dev users.
+lsh is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
 
 ## Compliance (WIP)
 
-Right now ncrypt stores the encryption keys in a `key` file, located in `$HOME/.config/ncrypt` with `0600` permission
+Right now lsh stores the encryption keys in a `key` file, located in `$HOME/.config/lsh` with `0600` permission
 . Ideally we'll have the keys stored in macOS keychain -- although I don't know if there's something comparable for 
 Linux and Windows.
 
 To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
 
-ncrypt comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
+lsh comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
 
 Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
 
-> In progress: https://github.com/lfaoro/ncrypt/issues/1
+> In progress: https://github.com/lfaoro/lsh/issues/1
