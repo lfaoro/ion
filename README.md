@@ -1,16 +1,15 @@
-# 🧬 ion - upload and share large data objects.
+# 🧬 ion - AES256/GCM encrypt and share large data objects.
 
 > End to end encrypted, if you want...
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
-No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/ion/tree/master/cmd/server) -- 
-check it.
+No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/ion/tree/master/cmd/server) -- check it.
 
 Your data (in its ciphered form) lives for maximum 24h in a GCS bucket. 
 
-[![pipeline status](https://gitlab.com/lfaoro/lsh/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ion/commits/master)
-[![coverage report](https://gitlab.com/lfaoro/lsh/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ion/commits/master)
+[![pipeline status](https://gitlab.com/lfaoro/ion/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ion/commits/master)
+[![coverage report](https://gitlab.com/lfaoro/ion/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ion/commits/master)
 
 ## Quick start
 
@@ -37,13 +36,14 @@ $ ion upload genesis.txt
 Download from: https:/s.apionic.com/nERuG_genesis.txt
 
 $ ion download nERuG_genesis.txt
-Downloaded genesis.txt
+290.19 MiB / 1.14 GiB [=======>---------------------]  24.83% 5.52 MiB/s 02m38s
+Downloaded: genesis.txt
 
 $ ion encrypt --key genesis.txt
 🔑 Encryption-key: 238dFomyjB3wEejjoSUef97Y/k1gMib6XvVS56i4Apg=
 🔒 Encrypted /tmp/genesis.txt
 
-$ ion decrypt genesis.txt
+$ ion decrypt --key genesis.txt
 🔑 Encryption-key: 238dFomyjB3wEejjoSUef97Y/k1gMib6XvVS56i4Apg=
 🔓 Decrypted /tmp/genesis.txt
 ```
