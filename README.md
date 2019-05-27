@@ -9,10 +9,8 @@ check it.
 
 Your data (in its ciphered form) lives for maximum 24h in a GCS bucket. 
 
-[![pipeline status](https://gitlab.com/lfaoro/lsh/badges/master/pipeline.svg)](https://gitlab
-.com/lfaoro/ion/commits/master)
-[![coverage report](https://gitlab.com/lfaoro/lsh/badges/master/coverage.svg)](https://gitlab
-.com/lfaoro/ion/commits/master)
+[![pipeline status](https://gitlab.com/lfaoro/lsh/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ion/commits/master)
+[![coverage report](https://gitlab.com/lfaoro/lsh/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ion/commits/master)
 
 ## Quick start
 
