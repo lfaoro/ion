@@ -11,7 +11,7 @@ import (
 	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
 
-var header = []byte("## ncrypted with love\n")
+var header = []byte("## ionized with love\n")
 
 func Encrypt(plaintext []byte, key *[32]byte) ([]byte, error) {
 	engine, err := aesgcm.New(key)
