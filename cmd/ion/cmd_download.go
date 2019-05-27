@@ -4,25 +4,21 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
-
-	"github.com/lfaoro/ncrypt/cmd/lsh/ccrypt"
 )
 
 var downloadCmd = cli.Command{
 	Name:    "download",
-	Aliases: []string{"d, do, down"},
+	Aliases: []string{"do", "dow", "down"},
 	Usage:   "downloads the encrypted file using the reference-code.",
 	Flags: []cli.Flag{
 		cli.StringFlag{
@@ -45,66 +41,41 @@ func downloadFile(fileName, output string) error {
 		return errors.New("invalid ncrypt file")
 	}
 
-	// check if file has ?key= pattern
-	var key = new([32]byte)
-	i := strings.Index(fileName, "?=")
-	t := i > 0
-	if t {
-		// decode key
-		k, err := base64.URLEncoding.DecodeString(fileName[i+2:])
-		if err != nil {
-			return err
-		}
-		copy(key[:], k)
-
-		// remove key hash from filename
-		fileName = fileName[:i]
-		fmt.Println(fileName)
+	if strings.Contains(fileName, "http"){
+		fileName = path.Base(fileName)
 	}
 
-	uri, err := url.ParseRequestURI("https://storage.googleapis.com/ncrypt-users")
+	uri, err := url.ParseRequestURI("https://storage.googleapis.com/"+bucketName)
 	if err != nil {
 		return err
 	}
 
 	uri.Path = path.Join(uri.Path, fileName)
-	fmt.Println("ℹ️ Reference URL:", uri.String())
 
 	res, err := http.Get(uri.String())
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode > 299 {
 		return errors.Wrap(err, "download:")
-	}
-
-	ciphertext, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(ciphertext[:10]))
-
-	var plaintext = []byte{}
-	if t {
-		pt, err := ccrypt.Decrypt(ciphertext, key)
-		if err != nil {
-			return err
-		}
-		plaintext = pt
 	}
 
 	if output == "" {
 		output, _ = filepath.Abs(fileName[6:])
 	}
 
-	err = ioutil.WriteFile(output, plaintext, 0600)
+	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("⬇️ Downloaded:", output)
-	o, err := exec.Command("head", "-n2", output).CombinedOutput()
-	fmt.Println("👀 Preview:\n", string(o))
+	err = ioutil.WriteFile(output, data, 0600)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Downloaded:", output)
 	return err
 }

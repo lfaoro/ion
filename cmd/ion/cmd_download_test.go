@@ -19,7 +19,7 @@ func Test_uploadFile(t *testing.T) {
 
 	// TODO(leo): add corrupted data test case.
 
-	err := uploadFile(fileName, false)
+	err := uploadFile(fileName)
 	assert.Nil(t, err)
 }
 

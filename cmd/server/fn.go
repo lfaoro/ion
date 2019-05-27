@@ -20,7 +20,7 @@ import (
 
 var (
 	// BucketName is the name of the bucket.
-	BucketName = "ncrypt-users"
+	BucketName = "s.apionic.com"
 	// SecretPath is the path where the system can find the secret json file.
 	SecretPath = ""
 	privateKey []byte
@@ -36,12 +36,13 @@ func init() {
 		log.Fatal(err)
 	}
 	privateKey = b
+
 	log.SetPrefix("stream: ")
 }
 
 const (
-	errHeaderFilename = "x-ncrypt-filename header missing"
-	errHeaderMD5      = "x-ncrypt-md5 header missing"
+	errHeaderFilename = "x-lsh-filename header missing"
+	errHeaderMD5      = "x-lsh-md5 header missing"
 )
 
 // TODO(leo): add request limit
@@ -52,7 +53,7 @@ const (
 //
 // Thank you Antti Kupila https://github.com/akupila for the suggestion.
 func Stream(w http.ResponseWriter, r *http.Request) {
-	fileName := r.Header.Get("x-ncrypt-filename")
+	fileName := r.Header.Get("x-ion-filename")
 	if fileName == "" {
 		hError(w, errHeaderFilename, http.StatusBadRequest)
 		return

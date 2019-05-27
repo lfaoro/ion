@@ -1,79 +1,77 @@
-# 🧬 lsh - upload and share large data objects
+# 🧬 ion - upload and share large data objects.
 
 > End to end encrypted, if you want...
 
 Encryption is done on your computer, your data does not hit the cloud unencrypted.
 
-No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/lsh/tree/master/cmd/server) -- 
+No logs except errors are being collected from [cmd/server](https://github.com/lfaoro/ion/tree/master/cmd/server) -- 
 check it.
 
 Your data (in its ciphered form) lives for maximum 24h in a GCS bucket. 
 
 [![pipeline status](https://gitlab.com/lfaoro/lsh/badges/master/pipeline.svg)](https://gitlab
-.com/lfaoro/lsh/commits/master)
+.com/lfaoro/ion/commits/master)
 [![coverage report](https://gitlab.com/lfaoro/lsh/badges/master/coverage.svg)](https://gitlab
-.com/lfaoro/lsh/commits/master)
+.com/lfaoro/ion/commits/master)
 
 ## Quick start
 
 ```bash
 # macOS
-brew install lfaoro/tap/lsh
+brew install lfaoro/tap/ion
 
 # linux (WIP)
-curl lsh.io/i | sh
+curl apionic.com/ion.sh | sh
 
 # developers
-go get -u github.com/lfaoro/lsh/cmd/lsh
-cd $GOPATH/src/github.com/lfaoro/lsh/cmd/lsh
+go get -u github.com/lfaoro/ion
 make install
-lsh -h
+ion -h
+
 make test
 ```
-
-## Quick usage
-
-```bash
-lsh up genesis.txt -to hello@lsh.io
-```
-
-Subject: You've got data!
-Body: Download your data from https://lsh.io/lsYuhN8h_genesis.txt
 
 ## Usage
 
 ```bash
-$ lsh upload genesis.doc # short: lsh u
-Success: https://lsh.io/lsYuhN8h_genesis.txt
+$ ion upload genesis.txt
+13.09 MiB / 1.14 GiB [>-----------------------------]   1.12% 1.72 MiB/s 11m11s
+Download from: https:/s.apionic.com/nERuG_genesis.txt
 
-$ lsh download 2E3fde2a-genesis.doc # short: lsh d
-Downloaded genesis.doc
+$ ion download nERuG_genesis.txt
+Downloaded genesis.txt
 
-$ lsh encrypt genesis.doc # short: lsh en
-Encrypted genesis.doc
+$ ion encrypt --key genesis.txt
+🔑 Encryption-key: 238dFomyjB3wEejjoSUef97Y/k1gMib6XvVS56i4Apg=
+🔒 Encrypted /tmp/genesis.txt
 
-$ lsh decrypt genesis.doc # short: lsh de
-Decrypted genesis.doc
+$ ion decrypt genesis.txt
+🔑 Encryption-key: 238dFomyjB3wEejjoSUef97Y/k1gMib6XvVS56i4Apg=
+🔓 Decrypted /tmp/genesis.txt
+```
 
-$ lsh u -p genesis.doc
-Secret-key: *********
-Success: https://lsh.io/lsYuhN8h_genesis.txt
+# WIP beta commands
 
-$ lsh lock 
+```
+$ ion lock 
 Password: **********
 Locked .config/lsh/key
 
-$ lsh unlock 
+$ ion unlock 
 Password: **********
 Unlocked .config/lsh/key
 
-# WIP commands
-
-$ lsh genesis.doc
+$ ion genesis.txt
 🧮 Unable to decrypt using your local key
 🔑 Decryption-key: ***********
-🔓 Decrypted genesis.doc
+🔓 Decrypted genesis.txt
+
+$ ion up genesis.txt -to hello@lsh.io
 ```
+
+## Sample email
+Subject: You've got data!
+Body: Download your data from https://s.apionic.com/lsYuh_genesis.txt
 
 ## Leading encryption standard
 
@@ -97,18 +95,18 @@ It's hard to find a service one can completely trust -- everybody claims they're
 I believe the only way trust what happens to your data is to see exactly the steps that lead to its manipulation, 
 encryption & storage.
 
-lsh is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
+ion is F/OSS -- anyone can check how data is being encrypted and handled, spot eventual issues and fix insecurities.
 
 ## Compliance (WIP)
 
-Right now lsh stores the encryption keys in a `key` file, located in `$HOME/.config/lsh` with `0600` permission
-. Ideally we'll have the keys stored in macOS keychain -- although I don't know if there's something comparable for 
+Right now lsh stores the encryption keys in a `key` file, located in `$HOME/.config/ion` with `0600` permission
+. Ideally we'll have the keys stored in the macOS keychain -- although I don't know if there's something comparable for 
 Linux and Windows.
 
 To comply with regulators you might need to generate encryption keys using a Hardware Security Module aka HSM. 
 
-lsh comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
+ion comes with a HSM plugin for GCP and AWS. These providers offer HSM as a service. 
 
 Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
 
-> In progress: https://github.com/lfaoro/lsh/issues/1
+> In progress: https://github.com/lfaoro/ion/issues/1

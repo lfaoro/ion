@@ -6,35 +6,12 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
-	"path/filepath"
 
 	"github.com/pkg/errors"
 
 	"github.com/lfaoro/pkg/encrypto/aesgcm"
 )
-
-func cryptoCmd(engine *aesgcm.AESGCM, filePath string, data []byte) error {
-	fileName := filepath.Base(filePath)
-	if isEncrypted(data) {
-		err := decryptFile(filePath, data, engine)
-		if err != nil {
-			return err
-		}
-
-		fmt.Printf("🔓 Decrypted %s\n", fileName)
-		return nil
-	}
-
-	err := encryptFile(filePath, data, engine)
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("🔒 Encrypted %s\n", fileName)
-	return nil
-}
 
 func encryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
 	cipherText, err := engine.Encrypt(data)
@@ -51,8 +28,8 @@ func encryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
 
 	return nil
 }
+
 func decryptFile(filePath string, data []byte, engine *aesgcm.AESGCM) error {
-	// remove ncrypt header
 	cipherText, err := removeHeader(data)
 	if err != nil {
 		return err

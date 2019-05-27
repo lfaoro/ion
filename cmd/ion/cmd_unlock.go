@@ -23,7 +23,7 @@ import (
 var unlockCmd = cli.Command{
 	Name:    "unlock",
 	Aliases: []string{"un, unl, unlo"},
-	Usage:   "WIP: unlocks the encryption key.",
+	Usage:   "unlocks the encryption key.",
 	Action: func(c *cli.Context) error {
 		fmt.Print("Encryption-key: ")
 		pwd, err := terminal.ReadPassword(int(os.Stdin.Fd()))
