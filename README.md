@@ -53,11 +53,11 @@ $ ion decrypt genesis.txt
 ```
 $ ion lock 
 Password: **********
-Locked .config/lsh/key
+Locked .config/ion/key
 
 $ ion unlock 
 Password: **********
-Unlocked .config/lsh/key
+Unlocked .config/ion/key
 
 $ ion genesis.txt
 🧮 Unable to decrypt using your local key

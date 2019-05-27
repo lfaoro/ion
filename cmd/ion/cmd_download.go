@@ -38,14 +38,14 @@ var downloadCmd = cli.Command{
 	},
 }
 
-func downloadFile(fileName, output string) error {
+func downloadFile(filename, output string) error {
 	// we append a len(6) string to every file
-	if len(fileName) <= 6 {
+	if len(filename) <= 6 {
 		return errors.New("invalid ncrypt file")
 	}
 
-	if strings.Contains(fileName, "http") {
-		fileName = path.Base(fileName)
+	if strings.Contains(filename, "http") {
+		filename = path.Base(filename)
 	}
 
 	uri, err := url.ParseRequestURI("https://storage.googleapis.com/" + bucketName)
@@ -53,7 +53,7 @@ func downloadFile(fileName, output string) error {
 		return err
 	}
 
-	uri.Path = path.Join(uri.Path, fileName)
+	uri.Path = path.Join(uri.Path, filename)
 
 	res, err := http.Get(uri.String())
 	if err != nil {
@@ -66,7 +66,7 @@ func downloadFile(fileName, output string) error {
 	}
 
 	if output == "" {
-		output, _ = filepath.Abs(fileName[6:])
+		output, _ = filepath.Abs(filename[6:])
 	}
 
 	size, _ := strconv.Atoi(res.Header.Get("Content-Length"))
@@ -89,6 +89,6 @@ func downloadFile(fileName, output string) error {
 		return err
 	}
 
-	fmt.Println("Downloaded:", output)
+	fmt.Printf("Downloaded: %s\n", output)
 	return err
 }
