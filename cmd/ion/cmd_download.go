@@ -10,10 +10,13 @@ import (
 	"net/url"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
 var downloadCmd = cli.Command{
@@ -41,11 +44,11 @@ func downloadFile(fileName, output string) error {
 		return errors.New("invalid ncrypt file")
 	}
 
-	if strings.Contains(fileName, "http"){
+	if strings.Contains(fileName, "http") {
 		fileName = path.Base(fileName)
 	}
 
-	uri, err := url.ParseRequestURI("https://storage.googleapis.com/"+bucketName)
+	uri, err := url.ParseRequestURI("https://storage.googleapis.com/" + bucketName)
 	if err != nil {
 		return err
 	}
@@ -66,7 +69,17 @@ func downloadFile(fileName, output string) error {
 		output, _ = filepath.Abs(fileName[6:])
 	}
 
-	data, err := ioutil.ReadAll(res.Body)
+	size, _ := strconv.Atoi(res.Header.Get("Content-Length"))
+	bar := pb.New(size)
+	bar.SetUnits(pb.U_BYTES)
+	bar.SetRefreshRate(time.Millisecond * 50)
+	bar.SetMaxWidth(80)
+	bar.ShowSpeed = true
+	bar.ShowFinalTime = true
+	bar.Start()
+	rd := bar.NewProxyReader(res.Body)
+
+	data, err := ioutil.ReadAll(rd)
 	if err != nil {
 		return err
 	}
