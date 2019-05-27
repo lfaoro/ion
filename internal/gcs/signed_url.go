@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -102,7 +101,7 @@ func UploadToSignedURL(url string, data *os.File) error {
 
 	res, err := c.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer res.Body.Close()
 	if res.StatusCode > 299 {

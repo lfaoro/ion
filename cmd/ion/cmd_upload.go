@@ -41,7 +41,6 @@ func uploadFile(fileName string) error {
 	var downloadURL = "http://s.apionic.com"
 
 	fpath := guessPath(fileName)
-	log.Println("guessed path", fpath)
 
 	rs := encrypto.RandomString(5)
 	uploadName := fmt.Sprintf("%v_%v", rs, fileName)

@@ -16,10 +16,7 @@ import (
 	"github.com/urfave/cli"
 
 	"github.com/lfaoro/pkg/encrypto"
-	"github.com/lfaoro/pkg/logger"
 )
-
-var log = logger.New("debug", nil)
 
 var (
 	// Header is what we append to encrypted files, in order to launch
@@ -86,7 +83,7 @@ func main() {
 	}
 
 	err := app.Run(os.Args)
-	exitIfError(err, "")
+	exitIfError(err)
 }
 
 func checkConfig() error {
@@ -156,13 +153,14 @@ func guessPath(fp string) string {
 
 	// otherwise we retrieve the working directory.
 	wd, err := os.Getwd()
-	exitIfError(err, "invalid path")
+	exitIfError(err)
 	return filepath.Join(wd, fp)
 }
 
-func exitIfError(err error, msg string) {
+func exitIfError(err error) {
 	if err != nil {
-		log.Fatalf("ERROR: %s: %s", msg, err)
+		fmt.Printf("ERROR: %s\n", err)
+		os.Exit(1)
 	}
 }
 
@@ -170,13 +168,13 @@ func buildFileList(args cli.Args) []string {
 	var files []string
 	for _, fileName := range args {
 		if fileName == "" {
-			exitIfError(errors.New("file/s to encrypt not provided"), "")
+			exitIfError(errors.New("file/s to encrypt not provided"))
 		}
 
 		info, err := os.Stat(fileName)
 		if err != nil {
 			e := err.(*os.PathError)
-			exitIfError(errors.Errorf("%s - %s", e.Path, e.Err.Error()), "")
+			exitIfError(errors.Errorf("%s - %s", e.Path, e.Err.Error()))
 		}
 		if info.IsDir() {
 			// TODO: add directory taring
@@ -188,8 +186,8 @@ func buildFileList(args cli.Args) []string {
 			os.Exit(1)
 		}
 
-		path := guessPath(fileName)
-		files = append(files, path)
+		fp := guessPath(fileName)
+		files = append(files, fp)
 	}
 	return files
 }
@@ -200,15 +198,15 @@ func backupFile(yes bool, fp string) {
 	}
 	filename := path.Base(fp)
 	tmp := os.TempDir()
-	backup := filepath.Join(tmp, "ncrypt", filename)
+	backup := filepath.Join(tmp, "ion", filename)
 	err := os.MkdirAll(filepath.Dir(backup), 0700)
-	exitIfError(err, "directory creation")
+	exitIfError(err)
 
 	data, err := ioutil.ReadFile(fp)
-	exitIfError(err, "readfile")
+	exitIfError(err)
 
 	err = ioutil.WriteFile(backup, data, 0600)
-	exitIfError(err, "writefile")
+	exitIfError(err)
 
 	fmt.Printf("💾 Backed up %s", filename)
 }
