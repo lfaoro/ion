@@ -13,10 +13,12 @@ build:
 	@go build -mod vendor "$(APP)"
 
 release:
-	goreleaser release --rm-dist
+	cd cmd/ion && \
+	goreleaser release --rm-dist --config=../../.goreleaser.yml
 
 reltest:
-	goreleaser release --snapshot --rm-dist --skip-publish
+	cd cmd/ion && \
+	goreleaser release --snapshot --rm-dist --skip-publish --config=../../.goreleaser.yml
 
 test:
 	@go test -mod vendor -cover "$(APP)"

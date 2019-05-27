@@ -31,6 +31,8 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+      - '^vendor:'
+      - '^refactor:'
 
 brew:
   # Repository to push the tap to.
@@ -46,7 +48,7 @@ brew:
 
   # Your app's homepage.
   # Default is empty.
-  homepage: "https://github.com/lfaoro"
+  homepage: "https://github.com/lfaoro/ion"
 
   # Your app's description.
   # Default is empty.
