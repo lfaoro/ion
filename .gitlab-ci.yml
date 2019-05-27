@@ -5,15 +5,14 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   CI_DEBUG_TRACE: "false"
 
-test-ncrypt:
+ion-cli:
   image: golang:latest
   allow_failure: false
-  script: |
-    cd cmd/ncrypt
-    make build
-    make test
+  script:
+    - make build
+    - make test
 
-test-server:
+ion-server:
   image: golang:latest
   allow_failure: true
   script: |
