@@ -7,8 +7,10 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/urfave/cli"
 
@@ -32,18 +34,21 @@ var uploadCmd = cli.Command{
 			return errors.New("what should we upload?")
 		}
 
-		err := uploadFile(fileName)
+		fpath, err := filepath.Abs(fileName)
+		if err != nil {
+			return err
+		}
+
+		err = uploadFile(fpath)
 		return err
 	},
 }
 
-func uploadFile(fileName string) error {
+func uploadFile(fpath string) error {
 	var downloadURL = "http://s.apionic.com"
 
-	fpath := guessPath(fileName)
-
 	rs := encrypto.RandomString(5)
-	uploadName := fmt.Sprintf("%v_%v", rs, fileName)
+	uploadName := fmt.Sprintf("%v_%v", rs, filepath.Base(fpath))
 	surl, err := gcs.GetSignedURL(uploadName, "")
 	if err != nil {
 		return err
@@ -58,9 +63,13 @@ func uploadFile(fileName string) error {
 		return err
 	}
 
-	url := path.Join(downloadURL, uploadName)
+	_url := path.Join(downloadURL, uploadName)
+	rawurl, err := url.Parse(_url)
+	if err != nil {
+		return err
+	}
 
-	fmt.Printf("\nDownload from: %s\n", url)
+	fmt.Printf("\nDownload from: %s\n", rawurl.String())
 
 	return nil
 }

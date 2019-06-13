@@ -2,6 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// .___________    _______
+// |   \_____  \   \      \
+// |   |/   |   \  /   |   \
+// |   /    |    \/    |    \
+// |___\_______  /\____|__  /
+// \/         \/
+//
 package main
 
 import (
@@ -10,7 +17,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
@@ -144,19 +150,6 @@ func keyFromConfig() ([]byte, error) {
 	return key, nil
 }
 
-func guessPath(fp string) string {
-	// if the path begins with a '/' character
-	// we can assume it's a canonical path.
-	if strings.HasPrefix(fp, "/") {
-		return fp
-	}
-
-	// otherwise we retrieve the working directory.
-	wd, err := os.Getwd()
-	exitIfError(err)
-	return filepath.Join(wd, fp)
-}
-
 func exitIfError(err error) {
 	if err != nil {
 		fmt.Printf("ERROR: %s\n", err)
@@ -186,7 +179,9 @@ func buildFileList(args cli.Args) []string {
 			os.Exit(1)
 		}
 
-		fp := guessPath(fileName)
+		fp, err := filepath.Abs(fileName)
+		exitIfError(err)
+
 		files = append(files, fp)
 	}
 	return files
