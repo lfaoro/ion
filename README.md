@@ -69,6 +69,7 @@ $ ion up genesis.txt -to hello@lsh.io
 
 ## Sample email
 Subject: You've got data!
+
 Body: Download your data from https://s.apionic.com/lsYuh_genesis.txt
 
 ## Leading encryption standard

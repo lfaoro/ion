@@ -73,7 +73,6 @@ func UploadToSignedURL(url string, data *os.File) error {
 		return errors.New("no data to upload")
 	}
 
-
 	header := []byte("## ionized with love\n")
 	buf := make([]byte, len(header))
 	_, err := io.ReadFull(data, buf)

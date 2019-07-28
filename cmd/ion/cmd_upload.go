@@ -14,8 +14,9 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/lfaoro/ncrypt/internal/gcs"
 	"github.com/lfaoro/pkg/encrypto"
+
+	"github.com/lfaoro/ncrypt/internal/gcs"
 )
 
 var uploadCmd = cli.Command{
