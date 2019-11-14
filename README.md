@@ -10,6 +10,7 @@ Your data (in its ciphered form) lives for maximum 24h in a GCS bucket.
 
 [![pipeline status](https://gitlab.com/lfaoro/ion/badges/master/pipeline.svg)](https://gitlab.com/lfaoro/ion/commits/master)
 [![coverage report](https://gitlab.com/lfaoro/ion/badges/master/coverage.svg)](https://gitlab.com/lfaoro/ion/commits/master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flfaoro%2Fion.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flfaoro%2Fion?ref=badge_shield)
 
 ## Quick start
 
@@ -109,3 +110,6 @@ ion comes with a HSM plugin for GCP and AWS. These providers offer HSM as a serv
 Configure the GCP/AWS environment variables in order to activate Cloud HSM; ref: https://.
 
 > In progress: https://github.com/lfaoro/ion/issues/1
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flfaoro%2Fion.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Flfaoro%2Fion?ref=badge_large)
